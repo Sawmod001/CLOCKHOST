@@ -84,10 +84,10 @@ export default function FeaturedSpaces({ listings, gate, loading, title, subtitl
             {emptyTitle || "New spaces are on the way"}
           </h3>
           <p className="mx-auto mt-2 max-w-md text-sm text-[var(--color-night-muted)]">
-            {emptySubtitle || "We are onboarding hosts in Ilorin. Stay close, the first venues go live very soon."}
+            {emptySubtitle || "We are onboarding hosts. Stay close, the first venues go live very soon."}
           </p>
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href="/sign-up" onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/sign-up")} className="btn-outline-night btn-outline-night-sm inline-flex min-h-[44px] items-center justify-center">
+            <Link href="/notify" className="btn-outline-night btn-outline-night-sm inline-flex min-h-[44px] items-center justify-center">
               Get notified
             </Link>
             <Link href="/sign-up" onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/sign-up")} className="btn-outline-night btn-outline-night-sm inline-flex min-h-[44px] items-center justify-center">

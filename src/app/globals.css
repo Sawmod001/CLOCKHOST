@@ -270,3 +270,306 @@ textarea:focus-visible {
 .animate-slide-up {
   animation: slide-up 0.5s ease-out;
 }
+
+/* ── ClockHost rebrand tokens v2 (docs/tokens-v2.css) ──────────────────────
+   New token names only (paper/haze/kola/zobo/guava/mango); nothing existing
+   is overridden. --font-* intentionally NOT in @theme (next/font variables
+   live on <html>); use .font-display-face / .fig / .price classes instead. */
+
+@theme {
+  --color-paper: #ffffff;
+  --color-haze: #f0f4f7;
+  --color-kola: #291411;
+  --color-zobo: #80183d;
+  --color-guava: #db546d;
+  --color-mango: #f1af57;
+
+  --text-hero: clamp(2.75rem, 1.6rem + 5vw, 5rem);
+  --text-hero--line-height: 1.0;
+  --text-hero--letter-spacing: -0.02em;
+  --text-section: clamp(2rem, 1.3rem + 3vw, 3.5rem);
+  --text-section--line-height: 1.06;
+  --text-h2: clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem);
+  --text-h2--line-height: 1.1;
+  --text-h3: clamp(1.25rem, 1.1rem + 0.8vw, 1.75rem);
+  --text-h3--line-height: 1.2;
+  --text-lead: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --text-lead--line-height: 1.5;
+  --text-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-body--line-height: 1.6;
+  --text-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --text-small--line-height: 1.5;
+  --text-figure: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  --text-figure--line-height: 0.9;
+
+  --radius-panel: 28px;
+  --radius-control: 12px;
+}
+
+:root {
+  --paper: #ffffff;
+  --haze: #f0f4f7;
+  --kola: #291411;
+  --zobo: #80183d;
+  --guava: #db546d;
+  --mango: #f1af57;
+
+  --fg-1: var(--kola);
+  --fg-2: color-mix(in srgb, var(--kola) 74%, transparent);
+  --fg-3: color-mix(in srgb, var(--kola) 66%, transparent);
+  --line: rgb(41 20 17 / 0.12);
+
+  --header-h: 72px;
+  --content: 77.5rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --gap: clamp(1rem, 2vw, 2rem);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-section: clamp(5rem, 3.5rem + 7vw, 9.5rem);
+  --space-section-lg: clamp(6.5rem, 4rem + 10vw, 13rem);
+}
+
+.surface-paper { background: var(--paper); color: var(--fg-1); }
+.surface-haze  { background: var(--haze);  color: var(--fg-1); }
+
+.surface-zobo {
+  --fg-1: #ffffff;
+  --fg-2: rgb(255 255 255 / 0.80);
+  --fg-3: rgb(255 255 255 / 0.70);
+  --line: rgb(255 255 255 / 0.16);
+  background: var(--zobo);
+  color: var(--fg-1);
+}
+
+.surface-kola {
+  --fg-1: #ffffff;
+  --fg-2: rgb(255 255 255 / 0.80);
+  --fg-3: rgb(255 255 255 / 0.70);
+  --line: rgb(255 255 255 / 0.16);
+  background: var(--kola);
+  color: var(--fg-1);
+}
+
+.surface-grain { position: relative; isolation: isolate; }
+.surface-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.surface-zobo.surface-grain::before,
+.surface-kola.surface-grain::before { opacity: 0.08; mix-blend-mode: screen; }
+
+.gradient-strip {
+  position: relative;
+  isolation: isolate;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.06) 0 1px, transparent 1px 3.25rem),
+    linear-gradient(105deg, #80183d 0%, #db546d 55%, #f1af57 100%);
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.06) 0 1px, transparent 1px 3.25rem),
+    linear-gradient(in oklch 105deg, var(--zobo) 0%, var(--guava) 55%, var(--mango) 100%);
+}
+.gradient-strip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.gradient-panel { border-radius: var(--radius-panel); overflow: hidden; }
+.gradient-selvedge { block-size: 8px; inline-size: 100%; }
+
+.wash-haze {
+  background: linear-gradient(180deg, var(--paper), var(--haze) 35%);
+  background: linear-gradient(in oklab 180deg, var(--paper), var(--haze) 35%);
+}
+
+.t-1 { color: var(--fg-1); }
+.t-2 { color: var(--fg-2); }
+.t-3 { color: var(--fg-3); }
+
+.font-display-face {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-synthesis: none;
+  text-wrap: balance;
+}
+
+/* Hero headline: Padyakke ships only a 400, so the H1 alone is allowed a
+   synthesised 700 plus a same-colour text stroke for presence.
+   Nothing else may synthesise weights or stroke text. */
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-synthesis: weight;
+  -webkit-text-stroke: 0.03em currentColor;
+  paint-order: stroke fill;
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+  line-height: 1.0;
+}
+
+.fig {
+  font-family: var(--font-figures);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.price { display: inline-flex; align-items: baseline; gap: 0.15em; color: var(--fg-1); }
+.price__cur { font-family: var(--font-body); font-weight: 500; font-size: 0.8em; }
+.price__num { font-family: var(--font-figures); font-weight: 600; font-size: 1.35em; letter-spacing: 0.01em; }
+.price__unit { font-family: var(--font-body); font-size: 0.85em; color: var(--fg-2); margin-inline-start: 0.35em; }
+
+/* Rebrand focus rings, homepage only (app keeps its existing rings) */
+.homePage :focus-visible { outline: 2px solid var(--zobo); outline-offset: 3px; border-radius: 6px; }
+.homePage .surface-zobo :focus-visible,
+.homePage .surface-kola :focus-visible { outline-color: var(--mango); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 48px;
+  padding-inline: 1.75rem;
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  background: var(--zobo);
+  color: #ffffff;
+  transition: background-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+.btn:hover { background: color-mix(in srgb, var(--zobo) 90%, black); }
+.btn:active { transform: translateY(1px); }
+.surface-zobo .btn,
+.surface-kola .btn { background: #ffffff; color: var(--kola); }
+.surface-zobo .btn:hover,
+.surface-kola .btn:hover { background: color-mix(in srgb, #ffffff 90%, var(--mango)); }
+
+.link {
+  color: var(--fg-1);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.2s;
+}
+.link:hover { text-decoration-color: currentColor; }
+
+.rule-list > * + * { border-block-start: 1px solid var(--line); }
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  inset-block-start: -100%;
+  z-index: 100;
+  background: var(--kola);
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 12px 12px;
+  font-weight: 600;
+}
+.skip-link:focus { inset-block-start: 0; }
+
+/* ── Rebrand v2 layout system (docs/02) ─────────────────────────────────── */
+@layer components {
+  .page {
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(var(--gutter), 1fr)
+      [content-start] minmax(0, var(--content))
+      [content-end] minmax(var(--gutter), 1fr)
+      [full-end];
+  }
+  .page > * { grid-column: content; }
+  .page > .full-bleed { grid-column: full; }
+
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+  }
+
+  .section { padding-block: var(--space-section); }
+  .section--lg { padding-block: var(--space-section-lg); }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    row-gap: var(--space-s);
+    align-items: end;
+  }
+  .section-head h2 { grid-column: 1 / span 7; text-wrap: balance; }
+  .section-head p { grid-column: 9 / -1; max-inline-size: 38ch; }
+  @media (max-width: 900px) {
+    .section-head h2, .section-head p { grid-column: 1 / -1; }
+  }
+
+  .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+  .hero__copy {
+    align-self: center;
+    padding-inline-start: max(var(--gutter), calc((100vw - var(--content)) / 2));
+    padding-inline-end: var(--space-l);
+    padding-block: var(--space-2xl);
+  }
+  .hero__media {
+    position: relative;
+    overflow: hidden;
+    border-start-start-radius: 999px;
+    border-start-end-radius: 999px;
+    border-end-start-radius: var(--radius-panel);
+    min-block-size: 32rem;
+  }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero__copy { padding-inline: var(--gutter); }
+    .hero__media {
+      border-radius: 999px 999px var(--radius-panel) var(--radius-panel);
+      margin-inline: var(--gutter);
+      aspect-ratio: 4 / 5;
+      min-block-size: 0;
+    }
+  }
+}
+
+/* Hero load sequence: CSS-only, run once, under 600ms (docs/01 §8) */
+@keyframes hero-settle {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hero-photo-settle {
+  from { opacity: 0; transform: scale(1.02); }
+  to { opacity: 1; transform: scale(1); }
+}
+.hero-load { animation: hero-settle 0.55s var(--ease-out) both; }
+.hero-load-1 { animation-delay: 0.05s; }
+.hero-load-3 { animation-delay: 0.25s; }
+
+/* Hero sub word-stagger: words rise in sequence after the headline.
+   hero-load-2 retired with the static sub. Reduced-motion kills it via the
+   global rule, leaving the text instantly visible. */
+.hero-word {
+  display: inline-block;
+  opacity: 0;
+  animation: hero-word-in 0.45s var(--ease-out) both;
+}
+@keyframes hero-word-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.hero-photo-load { animation: hero-photo-settle 0.6s var(--ease-out) both; }

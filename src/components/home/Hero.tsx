@@ -1,11 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { HERO } from "@/config/homepage";
-import { SectionContainer } from "./Section";
+import { IMAGES, type SiteImage } from "@/config/images";
 
 export type GateHandler = (e: React.MouseEvent, href: string) => void;
 
@@ -13,94 +10,71 @@ interface HeroProps {
   gate: GateHandler;
 }
 
+const SUB =
+  "Reviewed venues and shortlet apartments across Nigeria. Check real availability, compare what each space offers and book with confidence.";
+
+/**
+ * Hero — docs/02 (Hero) + docs/03 (Hero) + docs/04.
+ * Split panel, one bold H1, one button, real photo at full opacity.
+ * No chip, no fine print. CSS-only load sequence (<600ms, once).
+ */
 export default function Hero({ gate }: HeroProps) {
-  const bg = HERO.images.background;
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const yParallax = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const photo: SiteImage = IMAGES.heroPrimary ?? {
+    id: "hero-primary",
+    src: "/images/hero/hero-primary-4x5.jpg",
+    width: 736,
+    height: 920,
+    alt: "Guests toasting drinks at a warmly lit bar",
+    source: "owner-supplied",
+  };
 
   return (
-    <section ref={ref} className="relative overflow-hidden bg-[var(--color-night)]">
-      {/* Editorial motion background morphing 3D gradients + 360 rotation */}
-      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-        <img
-          src={bg.src}
-          alt=""
-          width={bg.width}
-          height={bg.height}
-          fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-[center_30%] opacity-[0.32]"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,18,15,0.55)_0%,rgba(10,18,15,0.88)_68%,rgba(10,18,15,0.98)_100%)]" />
-        {/* Morph gradient orbs customizable 3D */}
-        <motion.div
-          className="morph-blob absolute -top-28 -left-20 h-[560px] w-[560px] blur-[85px]"
-          style={{ background: "radial-gradient(circle, rgba(232,74,42,0.20) 0%, transparent 70%)" }}
-          animate={{ x: [0, 28, -18, 0], y: [0, -18, 28, 0], rotate: [0, 5, -5, 0], scale: [1, 1.04, 0.99, 1] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="morph-blob absolute -bottom-24 -right-20 h-[620px] w-[620px] blur-[90px]"
-          style={{ background: "radial-gradient(circle, rgba(232,184,109,0.13) 0%, transparent 70%)" }}
-          animate={{ x: [0, -22, 14, 0], y: [0, 18, -14, 0], rotate: [0, -4, 4, 0], scale: [1, 1.03, 0.98, 1] }}
-          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        />
-        <motion.div
-          className="morph-blob absolute top-[42%] left-1/2 h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 blur-[75px]"
-          style={{ background: "radial-gradient(circle, rgba(20,80,60,0.10) 0%, transparent 70%)" }}
-          animate={{ scale: [1, 1.07, 1], opacity: [0.5, 0.85, 0.5], rotate: [0, 180, 360] }}
-          transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-        />
-        {/* 360 rotating border */}
-        <motion.div
-          className="absolute top-1/2 left-1/2 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.04]"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
-
-      <SectionContainer className="relative flex min-h-[82svh] flex-col justify-center py-16 sm:py-20 lg:min-h-[78svh] lg:py-12">
-        <motion.div
-          style={{ y: yParallax, opacity }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="mx-auto max-w-3xl text-center"
-        >
-          <h1 className="font-bold leading-[0.92] tracking-tight text-white" style={{ fontFamily: "var(--font-manrope), var(--font-geist-sans), sans-serif" }}>
-            <span className="block text-[36px] sm:text-[52px] lg:text-[64px]">Find a place that</span>
-            <span className="block font-normal italic tracking-tight" style={{ fontFamily: "var(--font-instrument-serif), var(--font-fraunces), serif", fontSize: "clamp(36px, 6vw, 64px)" }}>
-              fits your plans.
-            </span>
+    <section aria-labelledby="hero-title" className="surface-paper full-bleed">
+      <div className="hero">
+        <div className="hero__copy">
+          <h1
+            id="hero-title"
+            className="hero-title t-1 hero-load hero-load-1 text-hero"
+          >
+            Find a space that fits{" "}
+            <span className="block">your plans.</span>
           </h1>
-
-          <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-white/70 sm:text-[17px]" style={{ fontFamily: "var(--font-manrope), sans-serif" }}>
-            {HERO.subtitle}
+          <p className="t-2 mt-6 max-w-[46ch] text-lead" aria-label={SUB}>
+            {SUB.split(" ").map((word, i, arr) => (
+              <span
+                key={i}
+                aria-hidden="true"
+                className="hero-word"
+                style={{ animationDelay: `${0.3 + i * 0.04}s` }}
+              >
+                {word}
+                {i < arr.length - 1 ? " " : ""}
+              </span>
+            ))}
           </p>
-
-          <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <div className="hero-load hero-load-3 mt-10">
             <Link
-              href={HERO.primaryCta.href}
-              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, HERO.primaryCta.href)}
-              className="group inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full bg-[var(--color-flame)] px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-black/20 transition-all hover:-translate-y-0.5 hover:bg-[var(--color-flame-bright)] hover:shadow-xl sm:w-auto"
+              href="/listings"
+              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/listings")}
+              className="btn w-full sm:w-auto"
             >
-              {HERO.primaryCta.label}
-              <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-            </Link>
-            <Link
-              href={HERO.secondaryCta.href}
-              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, HERO.secondaryCta.href)}
-              className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur transition-all hover:bg-white/10 sm:w-auto"
-            >
-              Become a Host
+              Browse spaces
             </Link>
           </div>
-        </motion.div>
-      </SectionContainer>
+        </div>
+        <div className="hero__media hero-photo-load">
+          <Image
+            src={photo.src}
+            alt={photo.alt}
+            width={photo.width}
+            height={photo.height}
+            priority
+            sizes="(min-width: 900px) 55vw, 100vw"
+            className="h-full w-full object-cover"
+            style={{ objectPosition: photo.objectPosition ?? "50% 28%" }}
+          />
+        </div>
+      </div>
     </section>
   );
 }

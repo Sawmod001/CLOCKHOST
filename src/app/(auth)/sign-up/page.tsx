@@ -22,6 +22,9 @@ function SignUpForm() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [step, setStep] = useState<"details" | "code">("details");
+  const [code, setCode] = useState("");
+  const [verifying, setVerifying] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -72,6 +75,10 @@ function SignUpForm() {
       }
 
       const next = safeNext(searchParams.get("next"));
+      if (data.needsVerification) {
+        setStep("code");
+        return;
+      }
       router.push(next || data.redirectTo || "/complete-profile");
     } catch (err: any) {
       console.error("Sign-up client error:", err);
@@ -88,6 +95,35 @@ function SignUpForm() {
     }
   }
 
+  async function handleVerify(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setVerifying(true);
+    try {
+      const res = await fetch("/api/auth/verify-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, code: code.trim() }),
+      });
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
+      if (!res.ok) {
+        setError(data.error || "Could not verify your email.");
+        return;
+      }
+      const next = safeNext(searchParams.get("next"));
+      router.push(next || data.redirectTo || "/complete-profile");
+    } catch (err) {
+      setError("Network error: " + ((err as Error).message || "Could not reach server."));
+    } finally {
+      setVerifying(false);
+    }
+  }
+
   return (
     <main className="flex min-h-screen flex-col bg-gradient-to-br from-[var(--color-primary-subtle)] via-white to-white px-4 py-10">
       <div className="m-auto w-full max-w-sm animate-fade-in">
@@ -97,10 +133,17 @@ function SignUpForm() {
 
         <div className="rounded-2xl border border-[var(--color-border)] bg-white p-8 shadow-lg shadow-black/[0.03]">
           <div className="mb-6">
-            <h1 className="text-xl font-semibold" style={{ color: "var(--color-ink)" }}>Create your account</h1>
-            <p className="mt-1 text-sm" style={{ color: "var(--color-ink-muted)" }}>Join ClockHost and discover amazing spaces</p>
+            <h1 className="text-xl font-semibold" style={{ color: "var(--color-ink)" }}>
+              {step === "code" ? "Check your inbox" : "Create your account"}
+            </h1>
+            <p className="mt-1 text-sm" style={{ color: "var(--color-ink-muted)" }}>
+              {step === "code"
+                ? `We emailed a 6-digit code to ${email}. Enter it to verify your email.`
+                : "Join ClockHost and discover amazing spaces"}
+            </p>
           </div>
 
+          {step === "details" ? (
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-1.5" style={{ color: "var(--color-ink)" }}>Email</label>
@@ -144,6 +187,31 @@ function SignUpForm() {
               {loading ? <><Loader2 size={16} className="animate-spin" /> Creating account...</> : "Create account"}
             </button>
           </form>
+          ) : (
+          <form onSubmit={handleVerify} className="space-y-5">
+            <div>
+              <label htmlFor="code" className="block text-sm font-medium mb-1.5" style={{ color: "var(--color-ink)" }}>6-digit code</label>
+              <input id="code" type="text" inputMode="numeric" autoComplete="one-time-code" value={code}
+                onChange={(e) => setCode(e.target.value.replace(/[^\d]/g, "").slice(0, 6))}
+                required minLength={6} maxLength={6}
+                className="block w-full rounded-xl border border-[var(--color-border)] bg-white px-4 py-3 text-center text-base tracking-[0.3em] outline-none transition-all focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10 sm:text-sm"
+                placeholder="123456" />
+            </div>
+
+            {error && (
+              <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-600">{error}</p>
+            )}
+
+            <button type="submit" disabled={verifying}
+              className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-primary)] px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-[var(--color-primary-dark)] disabled:opacity-50">
+              {verifying ? <><Loader2 size={16} className="animate-spin" /> Verifying...</> : "Verify email"}
+            </button>
+            <button type="button" onClick={() => setStep("details")}
+              className="w-full text-center text-sm font-medium" style={{ color: "var(--color-ink-muted)" }}>
+              Use a different email
+            </button>
+          </form>
+          )}
         </div>
 
         <div className="mt-6 text-center">

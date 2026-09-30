@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/home/Header";
 import Hero from "@/components/home/Hero";
-import QuickDiscovery from "@/components/home/QuickDiscovery";
+import ProofStrip from "@/components/home/ProofStrip";
 import ActivityDiscovery from "@/components/home/ActivityDiscovery";
 import FeaturedSpaces from "@/components/home/FeaturedSpaces";
 import TwoWaysToBook from "@/components/home/TwoWaysToBook";
@@ -57,18 +57,17 @@ export default function HomePage() {
   const shortlets = listings.filter((l) => (l.vertical || l.listingType) === "housing" || (l.vertical || l.listingType) === "shortlet");
 
   return (
-    <div className="homePage relative min-h-screen overflow-x-clip bg-[var(--color-night)] text-[var(--color-night-text)]">
-      <div className="grain pointer-events-none fixed inset-0 z-[1]" aria-hidden="true" />
-      <div className="relative z-[2]">
-        <Header gate={gate} />
-        <main>
-          {/* §7 IA: Hero + Discovery Search */}
-          <Hero gate={gate} />
+    <div className="homePage page surface-paper">
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+      <Header gate={gate} />
+      <main id="main">
+        {/* Hero + proof */}
+        <Hero gate={gate} />
+        <ProofStrip />
 
-          {/* §17 Quick Discovery Venues / Shortlets with real imagery */}
-          <QuickDiscovery gate={gate} />
-
-          {/* §20 Featured Venues Places worth discovering */}
+        {/* §20 Featured Venues Places worth discovering */}
           <FeaturedSpaces
             listings={loading ? [] : (venues.slice(0, 6) as any)}
             loading={loading}
@@ -76,7 +75,7 @@ export default function HomePage() {
             title="Places worth discovering"
             subtitle="Real venues, real photos, real availability no fake ratings."
             emptyTitle="Your next venue is coming"
-            emptySubtitle="We're bringing trusted venues onto ClockHost in Ilorin."
+            emptySubtitle="We're bringing trusted venues onto ClockHost. Stay close."
           />
 
           {/* §21 Featured Shortlets Stay somewhere that feels right */}
@@ -87,7 +86,7 @@ export default function HomePage() {
             title="Stay somewhere that feels right"
             subtitle="Furnished apartments with honest pricing, location and amenities."
             emptyTitle="Your next stay is coming"
-            emptySubtitle="We're onboarding shortlet hosts in Ilorin the first apartments go live soon."
+            emptySubtitle="We're onboarding shortlet hosts. The first apartments go live soon."
           />
 
           {/* §23 Booking models Book by capacity / Book the whole space */}
@@ -112,7 +111,6 @@ export default function HomePage() {
           <Faq />
         </main>
         <Footer gate={gate} />
-      </div>
     </div>
   );
 }

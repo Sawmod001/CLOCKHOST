@@ -5,9 +5,11 @@ interface LogoProps {
   className?: string;
   variant?: "light" | "dark" | (string & {});
   href?: string;
+  /** Wordmark accent colour. Defaults to legacy flame; rebrand passes zobo. */
+  accentClassName?: string;
 }
 
-export default function Logo({ size = "md", className = "", variant = "light", href = "/" }: LogoProps) {
+export default function Logo({ size = "md", className = "", variant = "light", href = "/", accentClassName = "text-[var(--color-flame)]" }: LogoProps) {
   const sizes: Record<string, string> = {
     sm: "h-7 w-7",
     md: "h-8 w-8",
@@ -34,7 +36,7 @@ export default function Logo({ size = "md", className = "", variant = "light", h
         height={32}
       />
       <span className={`${textSizes[size] || textSizes.md}`}>
-        Clock<span className="text-[var(--color-flame)]">Host</span>
+        Clock<span className={accentClassName}>Host</span>
       </span>
     </a>
   );

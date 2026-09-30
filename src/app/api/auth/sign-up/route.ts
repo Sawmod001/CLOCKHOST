@@ -1,10 +1,14 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { createHash, randomInt } from "crypto";
 import { clerkFetch } from "@/lib/auth/clerk";
 import { createUser } from "@/lib/db/supabase-queries";
+import { supabase } from "@/lib/db/supabase";
 import { getRedirectPath } from "@/lib/auth/redirect";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { validateCsrfOrigin } from "@/lib/csrf";
+import { isEmailConfigured, sendVerificationCode } from "@/lib/email";
+import type { UserRole } from "@/types/db";
 
 interface ClerkUserLike {
   id: string;
@@ -81,16 +85,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const session = (await clerkFetch("/sessions", {
-      method: "POST",
-      body: JSON.stringify({ user_id: clerkUser!.id }),
-    })) as { id: string };
-
-    const token = (await clerkFetch(`/sessions/${session.id}/tokens`, {
-      method: "POST",
-      body: JSON.stringify({}),
-    })) as { jwt: string };
-
     // Try to create Supabase user record (best-effort, never blocks)
     try {
       await createUser({
@@ -98,8 +92,7 @@ export async function POST(request: NextRequest) {
         name: trimmedEmail.split("@")[0] || "User",
         email: trimmedEmail,
         role: "guest",
-        is_email_verified: true,
-        email_verified_at: new Date().toISOString(),
+        is_email_verified: false,
         status: "active",
         profile_completed: false,
       });
@@ -107,23 +100,85 @@ export async function POST(request: NextRequest) {
       // Supabase unavailable — profile will be saved on complete-profile
     }
 
-    const meta = clerkUser!.public_metadata || {};
-    const redirectTo = getRedirectPath({
-      role: ((meta.role as string) || "guest") as import("@/types/db").UserRole,
-      profileCompleted: (meta.profileCompleted as boolean) || false,
-    });
+    // Email ownership check: no session is issued until the code is verified.
+    // Fallback while Brevo keys are unset: issue the session directly (pre-verification behavior).
+    if (!isEmailConfigured()) {
+      const session = (await clerkFetch("/sessions", {
+        method: "POST",
+        body: JSON.stringify({ user_id: clerkUser!.id }),
+      })) as { id: string };
+      const token = (await clerkFetch(`/sessions/${session.id}/tokens`, {
+        method: "POST",
+        body: JSON.stringify({}),
+      })) as { jwt: string };
+      const meta = clerkUser!.public_metadata || {};
+      const redirectTo = getRedirectPath({
+        role: ((meta.role as string) || "guest") as UserRole,
+        profileCompleted: (meta.profileCompleted as boolean) || false,
+      });
+      const response = NextResponse.json({ success: true, redirectTo });
+      response.cookies.set("__session", token.jwt, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      });
+      return response;
+    }
 
-    const response = NextResponse.json({ success: true, redirectTo });
+    const code = String(randomInt(100000, 1000000));
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
+    const codeHash = createHash("sha256").update(code).digest("hex");
+    const normalizedEmail = trimmedEmail.toLowerCase();
 
-    response.cookies.set("__session", token.jwt, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    });
+    const { data: existingCode } = await supabase
+      .from("email_verifications")
+      .select("id")
+      .eq("email", normalizedEmail)
+      .maybeSingle();
 
-    return response;
+    if (existingCode) {
+      const { error } = await supabase
+        .from("email_verifications")
+        .update({
+          code_hash: codeHash,
+          code_expires_at: expiresAt,
+          attempts: 0,
+          verified_at: null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("email", normalizedEmail);
+      if (error) {
+        return NextResponse.json({ error: "Could not start verification. Please try again." }, { status: 500 });
+      }
+    } else {
+      const { error } = await supabase.from("email_verifications").insert({
+        email: normalizedEmail,
+        code_hash: codeHash,
+        code_expires_at: expiresAt,
+        attempts: 0,
+      });
+      if (error) {
+        return NextResponse.json({ error: "Could not start verification. Please try again." }, { status: 500 });
+      }
+    }
+
+    try {
+      await sendVerificationCode(
+        normalizedEmail,
+        trimmedEmail.split("@")[0] || "there",
+        code
+      );
+    } catch (error) {
+      console.error("sign-up verification email failed:", (error as Error).message);
+      return NextResponse.json(
+        { error: "We could not send the verification email. Please try again." },
+        { status: 502 }
+      );
+    }
+
+    return NextResponse.json({ success: true, needsVerification: true });
   } catch (error) {
     const err = error as { status?: number; message?: string };
     const status = err.status || 400;

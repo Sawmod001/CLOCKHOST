@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
 import Logo from "@/components/Logo";
-import { NAV_LINKS } from "@/config/homepage";
 
 export type GateHandler = (e: React.MouseEvent, href: string) => void;
 
@@ -12,79 +10,107 @@ interface HeaderProps {
   gate: GateHandler;
 }
 
+/**
+ * Header — docs/02 (Header) + docs/03 (Header).
+ * 72px sticky paper, hairline only after scroll, no filled button.
+ * Mobile: "Menu" button opening a full-height sheet with large links.
+ */
+const LINKS = [
+  { label: "Venues", href: "/listings?vertical=venue" },
+  { label: "Shortlets", href: "/listings?vertical=housing" },
+  { label: "How it works", href: "/#how-it-works" },
+];
+
+const QUIET_LINKS = [
+  { label: "Become a host", href: "/sign-up", gated: true },
+  { label: "Sign in", href: "/sign-in", gated: false },
+];
+
 export default function Header({ gate }: HeaderProps) {
-  const [mobileMenu, setMobileMenu] = useState<boolean>(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [scrolled, setScrolled] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const handleNav = (href: string, gated: boolean) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (gated) gate(e, href);
+    if (menuOpen) setMenuOpen(false);
+  };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-night-border)] bg-[var(--color-night)]/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:py-4">
-        <Logo href="/" variant="dark" />
+    <header
+      className="surface-paper sticky top-0 z-40 transition-[border-color] duration-200"
+      style={{ borderBlockEnd: `1px solid ${scrolled ? "var(--line)" : "transparent"}` }}
+    >
+      <div
+        className="mx-auto flex items-center justify-between"
+        style={{
+          maxWidth: "var(--content)",
+          paddingInline: "var(--gutter)",
+          minHeight: "var(--header-h)",
+        }}
+      >
+        <Logo href="/" variant="light" accentClassName="text-[var(--kola)]" />
 
-        <nav className="hidden items-center gap-1 sm:flex" aria-label="Primary">
-          {NAV_LINKS.map((link) => (
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
+          {LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, link.href)}
-              className="rounded-xl px-4 py-2 text-sm font-semibold text-[var(--color-night-muted)] transition-colors hover:bg-white/5 hover:text-[var(--color-night-text)]"
+              onClick={handleNav(link.href, true)}
+              className="t-1 min-h-[44px] items-center text-[15px] font-medium transition-opacity hover:opacity-70"
+              style={{ display: "inline-flex" }}
             >
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/sign-in"
-            className="rounded-xl px-4 py-2 text-sm font-semibold text-[var(--color-night-muted)] transition-colors hover:bg-white/5 hover:text-[var(--color-night-text)]"
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/sign-up"
-            className="ml-2 rounded-xl bg-[var(--color-flame)] px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[var(--color-flame-bright)]"
-          >
-            Get started
-          </Link>
+          {QUIET_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={handleNav(link.href, link.gated)}
+              className="t-2 min-h-[44px] text-[15px] font-medium transition-opacity hover:opacity-70"
+              style={{ display: "inline-flex", alignItems: "center" }}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         <button
-          onClick={() => setMobileMenu((v) => !v)}
-          className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl p-2 text-[var(--color-night-text)] sm:hidden"
-          aria-label="Toggle menu"
-          aria-expanded={mobileMenu}
+          type="button"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
+          className="t-1 min-h-[44px] min-w-[44px] px-2 text-[15px] font-semibold md:hidden"
         >
-          {mobileMenu ? <X size={22} /> : <Menu size={22} />}
+          Menu
         </button>
       </div>
 
-      {mobileMenu && (
-        <div className="border-t border-[var(--color-night-border)] bg-[var(--color-night)] px-4 py-4 sm:hidden animate-fade-in">
-          <nav className="flex flex-col gap-2" aria-label="Mobile">
-            {NAV_LINKS.map((link) => (
+      {menuOpen && (
+        <div
+          id="mobile-menu"
+          className="surface-paper fixed inset-0 top-[var(--header-h)] z-40 overflow-y-auto md:hidden"
+          style={{ borderBlockStart: "1px solid var(--line)" }}
+        >
+          <nav className="flex flex-col gap-1 px-[var(--gutter)] py-8" aria-label="Mobile">
+            {[...LINKS.map((l) => ({ ...l, gated: true })), ...QUIET_LINKS].map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                  setMobileMenu(false);
-                  gate(e, link.href);
-                }}
-                className="rounded-xl px-4 py-3 text-sm font-semibold text-[var(--color-night-text)] hover:bg-white/5"
+                onClick={handleNav(link.href, link.gated)}
+                className="font-display-face t-1 border-b py-4 text-h3"
+                style={{ borderBlockEnd: "1px solid var(--line)" }}
               >
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/sign-in"
-              onClick={() => setMobileMenu(false)}
-              className="rounded-xl px-4 py-3 text-sm font-semibold text-[var(--color-night-muted)] hover:bg-white/5"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/sign-up"
-              onClick={() => setMobileMenu(false)}
-              className="rounded-xl bg-[var(--color-flame)] px-4 py-3 text-center text-sm font-semibold text-white"
-            >
-              Get started
-            </Link>
           </nav>
         </div>
       )}
