@@ -1,24 +1,24 @@
 # Homepage Redesign Changelog — ClockHost
 
-> **Scope:** Homepage only (`src/app/page.js`, `src/components/home/*`, `src/config/homepage.js`) per spec §4. No backend/API/auth/bookings changes unless proven necessary.
+> **Scope:** Homepage only (`src/app/page.tsx`, `src/components/home/*`, `src/config/homepage.ts`) per spec §4. No backend/API/auth/bookings changes unless proven necessary.
 
 ## Baseline (Phase 0)
 
 - **Next** `16.2.10` Turbopack, **React** `19.2.4`, **Tailwind** `4`, `lucide-react`, `jose` (auth fix)
-- **Fonts:** `next/font` `Geist` + `Fraunces` (`src/app/layout.js:1`) — kept, homepage-scoped decision Option A (no global replace)
+- **Fonts:** `next/font` `Geist` + `Fraunces` (`src/app/layout.tsx:1`) — kept, homepage-scoped decision Option A (no global replace)
 - **Global CSS:** `src/app/globals.css` night tokens `--color-night/#0A1C14`, `--color-flame/#C94428`, `--color-gold/#D9A866` — already match spec §14 Deep Night/Warm Flame, reused not replaced
 - **Build:** `git status` clean at `1fd347c`, `next dev` Ready 3.3s, `test 36/36`, `middleware→proxy` deprecation warning only
 
 ## Added Files
 
-- `src/components/home/QuickDiscovery.jsx` — §17-18 two cards Venues/Shortlets with real imagery, hover zoom, `→` arrow, border/shadow transition
-- `src/components/home/ActivityDiscovery.jsx` — §19 horizontal chips `Birthday/Hangout…` desktop grid / mobile scroll, real `href` not business type
-- `src/lib/formatWAT.js` — §26 WAT helper (not homepage but used)
+- `src/components/home/QuickDiscovery.tsx` — §17-18 two cards Venues/Shortlets with real imagery, hover zoom, `→` arrow, border/shadow transition
+- `src/components/home/ActivityDiscovery.tsx` — §19 horizontal chips `Birthday/Hangout…` desktop grid / mobile scroll, real `href` not business type
+- `src/lib/formatWAT.ts` — §26 WAT helper (not homepage but used)
 - `docs/HOMEPAGE_REDESIGN_CHANGELOG.md` — this file
 
 ## Modified Files
 
-- `src/config/homepage.js` — **Phase 1 copy fixes** per §66:
+- `src/config/homepage.ts` — **Phase 1 copy fixes** per §66:
   - `HERO` `Find a place that fits your plans.` + `Discover trusted venues…` + `floating` imagery
   - `NAV_LINKS` → `Venues / Shortlet Apartments / How it works / Become a Host` (§67)
   - `QUICK_DISCOVERY` replaces `CATEGORIES` Birthday/Karaoke (now `Venues`/`Shortlets` with `image/href/cta`)
@@ -29,22 +29,22 @@
   - `TESTIMONIALS = []` (§27) + `HOST_CTA` → `Have a space people would love? Venue 1 / Shortlet N` (§68)
   - Legacy `CATEGORIES` kept for backward compat, will be removed per §46 after verify no other route imports (none found)
 
-- `src/components/home/Hero.jsx` — **Phase 4** §8-10: headline + supporting copy + `Venues|Shortlets` toggle + `Location/Date/Guests` fields → `router.push /listings?vertical=…`, layered `floating` 3 images subtle hover scale, focus transitions, `grain` preserved, no 3D/canvas (§10), `loading=eager` + `fetchPriority`
-- `src/components/home/FeaturedSpaces.jsx` — **Phase 5** §20-22 price safety: `housing` uses `monthlyRateKobo`/`nightlyRate` + `"/mo"|"/night"` not `"/hr"`, `Price on request` fallback, no fabricated ratings
-- `src/components/home/WhyClockHost.jsx` — §25 eyebrow `Trust & transparency` / title `Know what you're booking`
-- `src/components/home/Faq.jsx` — §28 subtitle `before booking your next place`, accordion already `aria-expanded`/`ChevronDown rotate-180` + `prefers-reduced-motion` via `globals.css:44`
-- `src/components/home/Testimonials.jsx` — §27 early `return null` if empty (no fake social proof)
-- `src/components/home/Locations.jsx` — §26 already `Ilorin` first, `Live in Ilorin, growing nationwide`, no invented stats
-- `src/components/home/HostCta.jsx` — uses `HOST_CTA` new copy (no kitchen/unlimited)
-- `src/app/page.js` — **Phase 2 IA** §7 order: `Header → Hero → QuickDiscovery → Featured Venues (Places worth…) → Featured Shortlets (Stay somewhere…) → TwoWaysToBook (Book by capacity/whole) → HowItWorks → WhyClockHost (Trust) → ActivityDiscovery → Locations → HostCta → Faq → Footer` ; `listings` split `venues` vs `shortlets` real data, `fetch limit 12`, `grain` + `homePage` scoped wrapper `.homePage` per §42
+- `src/components/home/Hero.tsx` — **Phase 4** §8-10: headline + supporting copy + `Venues|Shortlets` toggle + `Location/Date/Guests` fields → `router.push /listings?vertical=…`, layered `floating` 3 images subtle hover scale, focus transitions, `grain` preserved, no 3D/canvas (§10), `loading=eager` + `fetchPriority`
+- `src/components/home/FeaturedSpaces.tsx` — **Phase 5** §20-22 price safety: `housing` uses `monthlyRateKobo`/`nightlyRate` + `"/mo"|"/night"` not `"/hr"`, `Price on request` fallback, no fabricated ratings
+- `src/components/home/WhyClockHost.tsx` — §25 eyebrow `Trust & transparency` / title `Know what you're booking`
+- `src/components/home/Faq.tsx` — §28 subtitle `before booking your next place`, accordion already `aria-expanded`/`ChevronDown rotate-180` + `prefers-reduced-motion` via `globals.css:44`
+- `src/components/home/Testimonials.tsx` — §27 early `return null` if empty (no fake social proof)
+- `src/components/home/Locations.tsx` — §26 already `Ilorin` first, `Live in Ilorin, growing nationwide`, no invented stats
+- `src/components/home/HostCta.tsx` — uses `HOST_CTA` new copy (no kitchen/unlimited)
+- `src/app/page.tsx` — **Phase 2 IA** §7 order: `Header → Hero → QuickDiscovery → Featured Venues (Places worth…) → Featured Shortlets (Stay somewhere…) → TwoWaysToBook (Book by capacity/whole) → HowItWorks → WhyClockHost (Trust) → ActivityDiscovery → Locations → HostCta → Faq → Footer` ; `listings` split `venues` vs `shortlets` real data, `fetch limit 12`, `grain` + `homePage` scoped wrapper `.homePage` per §42
 
 ## Deleted Files
 
-- None yet — `Categories.jsx` obsolete per §46, kept until final verification that no other route imports it (checked `src/app/**` — none). Will delete in cleanup.
+- None yet — `Categories.tsx` obsolete per §46, kept until final verification that no other route imports it (checked `src/app/**` — none). Will delete in cleanup.
 
 ## Dependencies — Scrum Sprint 1
 
-- **Added `framer-motion@13.1.1`** (§30 Motion preferred, §59 verified: supports `next 16.2.10` / `react 19.2.4`, bundle +~30kb, homepage-scoped only, no GSAP/AOS) — used for hero orbs + FAQ `AnimatePresence` per §31 `src/components/home/animations/variants.js` pattern, respects `prefers-reduced-motion` (§32).
+- **Added `framer-motion@13.1.1`** (§30 Motion preferred, §59 verified: supports `next 16.2.10` / `react 19.2.4`, bundle +~30kb, homepage-scoped only, no GSAP/AOS) — used for hero orbs + FAQ `AnimatePresence` per §31 `src/components/home/animations/variants.tsx` pattern, respects `prefers-reduced-motion` (§32).
 
 ## Fonts
 
@@ -68,7 +68,7 @@
 
 ## CSS
 
-- **Global safety intact** (§5, §41): did not modify `globals.css` beyond existing night tokens; homepage styling via Tailwind `bg-[var(--color-night)]` + `homePage` wrapper, no `h1{}` global. No TS artifacts (`.js/.jsx` only per §39), no invalid nesting (§40).
+- **Global safety intact** (§5, §41): did not modify `globals.css` beyond existing night tokens; homepage styling via Tailwind `bg-[var(--color-night)]` + `homePage` wrapper, no `h1{}` global. No JS artifacts (sources are `.ts/.tsx` per §39, TS errors kept at zero), no invalid nesting (§40).
 
 ## Responsive
 
@@ -80,16 +80,16 @@
 
 ## Performance
 
-- `Hero` eager + `fetchPriority high` only for hero bg, floating `loading=lazy`, `QuickDiscovery` images `loading=lazy`, no huge decorative assets per §37, client components only `Hero/QuickDiscovery/Activity/Faq` (needs state), rest server-capable, minimal JS (§52)
+- `Hero` eager + `fetchPriority high` only for hero bg, floating `loading=lazy`, `QuickDiscovery` images `loading=lazy`, no huge decorative assets per §37, client components only `Hero/QuickDiscovery/Activity/Faq` (needs state), rest server-capable, minimal TS (§52)
 
 ## Build / Regression (§53-55)
 
-- `node --check` JS syntax OK, `next dev` Ready 3.3s, `GET /` 200 new headline, `GET /listings` 200, `GET /bookings` 401→guest, `GET /dashboard` gated, `GET /host` gated — no unrelated break
-- **Known limitation:** `Categories.jsx` still exists (obsolete) — safe to delete after final approval
+- `npx tsc --noEmit` clean, `next dev` Ready 3.3s, `GET /` 200 new headline, `GET /listings` 200, `GET /bookings` 401→guest, `GET /dashboard` gated, `GET /host` gated — no unrelated break
+- **Known limitation:** `Categories.tsx` still exists (obsolete) — safe to delete after final approval
 
 ## Rollback
 
-- `git revert HEAD` or `git checkout main -- src/app/page.js src/components/home/Hero.jsx src/config/homepage.js` etc. Each component isolated per §58.
+- `git revert HEAD` or `git checkout main -- src/app/page.tsx src/components/home/Hero.tsx src/config/homepage.ts` etc. Each component isolated per §58.
 
 ## Definition of Done (§80)
 

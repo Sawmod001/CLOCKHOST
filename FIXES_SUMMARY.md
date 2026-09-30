@@ -7,23 +7,23 @@
 **Symptom:** `sign-in/sign-up → fetch failed`, ChatBot `UnauthorizedRetry`
 
 **Root causes:**
-- `src/lib/csrf.js:16` `ALLOWED_ORIGINS=[localhost]` blocked Vercel (`hostme.in`, `*.vercel.app`) with 403
-- `src/lib/auth/clerk.js:12` 30s timeout > Vercel 10s + 9× retries → gateway timeout, `fetch failed` swallowed as 401
-- `src/app/api/chat:30` + `src/middleware.js:76` required auth for guests → 401
+- `src/lib/csrf.ts:16` `ALLOWED_ORIGINS=[localhost]` blocked Vercel (`hostme.in`, `*.vercel.app`) with 403
+- `src/lib/auth/clerk.ts:12` 30s timeout > Vercel 10s + 9× retries → gateway timeout, `fetch failed` swallowed as 401
+- `src/app/api/chat:30` + `src/middleware.ts:76` required auth for guests → 401
 
 **Fixes:**
-- `csrf.js` dynamic `CLOCKHOST/HOSTME/VERCEL_URL` + strict `originHost===host`, no wildcard, `middleware 130` exact host, missing Origin → 403 if cookie present
-- `clerk.js` 8s + `503` mapping for `AbortError/ECONN`, `sign-in/up route` 2 variants fail-fast, client pages `sign-in/up:60` distinct 503/403 handling
+- `csrf.ts` dynamic `CLOCKHOST/HOSTME/VERCEL_URL` + strict `originHost===host`, no wildcard, `middleware 130` exact host, missing Origin → 403 if cookie present
+- `clerk.ts` 8s + `503` mapping for `AbortError/ECONN`, `sign-in/up route` 2 variants fail-fast, client pages `sign-in/up:60` distinct 503/403 handling
 - `middleware 24` move `/api/chat` → `PUBLIC_API_PREFIXES`, `chat:31` public `10/20/min`, `ChatBot:54` `x-goog-api-key` header + friendly fallback
 - `src/app/bookings → (public)/bookings` fixes Next 16.2 parallel-route crash (`Ready 2.5s`)
 - Verified: `npm test` 36/36, `GET /sign-in` 200, guest `POST /api/chat` 200, `evil.com` 403
 
 ## 2. Security Hardening (AUDIT-SEC-001 TRUTH-1)
 
-- `src/lib/auth/clerkJwt.js` (new) `jose` JWKS verify cached 1h, `getSessionUser:8` async `verifyClerkJwt` + `alg≠none` + `user_*` + `exp/iat`
-- `src/middleware.js:109` async `await parseSessionToken`, RSC now `await` + still `isProtectedApi` 401 JSON (no bypass), onboarding via verified `payload.public_metadata`
+- `src/lib/auth/clerkJwt.ts` (new) `jose` JWKS verify cached 1h, `getSessionUser:8` async `verifyClerkJwt` + `alg≠none` + `user_*` + `exp/iat`
+- `src/middleware.ts:109` async `await parseSessionToken`, RSC now `await` + still `isProtectedApi` 401 JSON (no bypass), onboarding via verified `payload.public_metadata`
 - `src/lib/auth/helpers:14` + 15 routes `await parseSessionToken`
-- `src/lib/db/supabase.js:139` `_validateIdentifier` + table/col checks (SQLi fix)
+- `src/lib/db/supabase.ts:139` `_validateIdentifier` + table/col checks (SQLi fix)
 - `src/lib/csrf` tightened same-host only, `src/middleware` exact host
 - `src/lib/db/supabase-admin:6` pooler regex `postgres.<20>` for `pooler.supabase.com`
 
@@ -42,7 +42,7 @@
 
 ## 4. WAT Timezone (AUDIT-UI-002 E1)
 
-- `src/lib/formatWAT.js` new, 21 files patched: `toLocale*(en-NG,{timeZone:Africa/Lagos})` — `dashboard`, `host/bookings`, `listings/[id]/checkout`, `bookings/[id]`, `group-plans`, `calendar`, `admin/audit`, `viewings`, etc.
+- `src/lib/formatWAT.ts` new, 21 files patched: `toLocale*(en-NG,{timeZone:Africa/Lagos})` — `dashboard`, `host/bookings`, `listings/[id]/checkout`, `bookings/[id]`, `group-plans`, `calendar`, `admin/audit`, `viewings`, etc.
 
 ## 5. Housing Monthly Model (HOUS-001 §41)
 
@@ -54,9 +54,9 @@
 
 ## 7. Build / Config
 
-- `next.config.mjs:6` `*.supabase` → `**.supabase`
+- `next.config.ts:6` `*.supabase` → `**.supabase`
 - `package.json` + `package-lock.json` added `jose@6.1.3`
-- `vercel.json` + `src/lib/db/supabase.js` + `src/app/api/search:98` `.catch` + `src/app/api/payments/initiate:48` `VERCEL_URL` fallback
+- `vercel.json` + `src/lib/db/supabase.ts` + `src/app/api/search:98` `.catch` + `src/app/api/payments/initiate:48` `VERCEL_URL` fallback
 
 ## 8. PDSS Status
 

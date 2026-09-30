@@ -4,7 +4,7 @@ Multi-vertical marketplace for Nigerian hospitality and real estate. Hosts list 
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 App Router (JavaScript)
+- **Framework**: Next.js 16 App Router (TypeScript)
 - **Database**: Supabase PostgreSQL 
 - **Auth**: Clerk 
 - **CSS**: Tailwind v4
@@ -17,7 +17,7 @@ Multi-vertical marketplace for Nigerian hospitality and real estate. Hosts list 
 
 - **Capacity booking** — atomic `UPDATE ... RETURNING` prevents overselling; 10-minute soft holds; 5% commission in integer kobo.
 - **Exclusive booking** — first-to-pay wins a time-window lock; losers marked `lost_race`.
-- **Group booking (Book Together)** — invite link, per-member shares priced by `pricing.js`, one transaction finalizes paid plans.
+- **Group booking (Book Together)** — invite link, per-member shares priced by `pricing.ts`, one transaction finalizes paid plans.
 - **WhatsApp assistant** — Meta webhook → pure bot brain (intents, area extraction, availability) → interactive list messages; Gemini for open-ended questions; deep links into the web app.
 - **Dual-role accounts** — `guest` / `host` / `admin` with a role switch.
 
@@ -33,8 +33,8 @@ Multi-vertical marketplace for Nigerian hospitality and real estate. Hosts list 
 │   │   ├── api/                      # server routes grouped by resource:
 │   │   │   │                         #   auth, admin, bookings, group-plans, listings,
 │   │   │   │                         #   payments, users, whatsapp, cron, upload, …
-│   │   ├── layout.js                 # root layout (fonts, metadata)
-│   │   ├── page.js                   # marketplace home
+│   │   ├── layout.tsx                 # root layout (fonts, metadata)
+│   │   ├── page.tsx                   # marketplace home
 │   │   ├── dashboard/                # post-login landing per role
 │   │   └── management-portal-x7q/    # admin portal (single, unguessable URL)
 │   ├── components/                   # Logo, ChatBot
@@ -45,15 +45,15 @@ Multi-vertical marketplace for Nigerian hospitality and real estate. Hosts list 
 │   │   ├── payments/                 # Paystack webhook verification
 │   │   ├── whatsapp/                 # WhatsApp client, bot brain, Gemini
 │   │   ├── jobs/                     # background sweeps (cron)
-│   │   ├── rate-limit.js             # shared guard
-│   │   └── validation.js             # Zod schemas
-│   └── middleware.js                 # route protection
+│   │   ├── rate-limit.ts             # shared guard
+│   │   └── validation.ts             # Zod schemas
+│   └── middleware.ts                 # route protection
 ├── public/                           # static assets (uploaded images)
 ├── supabase/
 │   ├── migration.sql                  # schema + stored procedures
 │   └── scripts/                       # DB migration runners
 ├── tests/                             # offline unit tests
-├── next.config.mjs                    # Next.js config
+├── next.config.ts                    # Next.js config
 ├── package.json                       # dependencies + scripts
 └── vercel.json                        # cron schedule
 ```
@@ -63,17 +63,17 @@ Multi-vertical marketplace for Nigerian hospitality and real estate. Hosts list 
 Requests flow top-down: browser → page → API route → `lib` → Postgres.
 
 1. **Page** (`src/app/**`) asks the browser for data using `fetch()` to an API route or loads it directly in a Server Component.
-2. **API route** (`src/app/api/**`) validates the request with Zod (`validation.js`) and confirms the caller with `src/lib/auth/getSessionUser.js`.
-3. **Business logic** lives in `src/lib/bookings/*` (capacity, exclusive, group engines — all price math through `pricing.js`).
+2. **API route** (`src/app/api/**`) validates the request with Zod (`validation.ts`) and confirms the caller with `src/lib/auth/getSessionUser.ts`.
+3. **Business logic** lives in `src/lib/bookings/*` (capacity, exclusive, group engines — all price math through `pricing.ts`).
 4. **Persistence** goes through `src/lib/db/*` (raw `pg` pool + a thin Supabase-style query builder) into the Supabase PostgreSQL `supabase/migration.sql` schema.
 
 Auth anatomy — the chain the demo should walk through:
 
-- `src/middleware.js` guards protected pages and redirects to `/sign-in` when the Clerk `__session` cookie is missing.
-- `src/lib/auth/clerk.js` parses that cookie and talks to the Clerk API using `CLERK_SECRET_KEY`.
-- `src/lib/auth/getSessionUser.js` resolves the cookie into the current user — nearly every page and API route starts here.
-- `src/lib/auth/getUser.js` maps the Clerk account to a row in the `users` table (role: `guest` / `host` / `admin`).
-- `src/lib/auth/redirect.js` then sends each role to its own area: `(public)`, `(host)` or `(admin)`.
+- `src/middleware.ts` guards protected pages and redirects to `/sign-in` when the Clerk `__session` cookie is missing.
+- `src/lib/auth/clerk.ts` parses that cookie and talks to the Clerk API using `CLERK_SECRET_KEY`.
+- `src/lib/auth/getSessionUser.ts` resolves the cookie into the current user — nearly every page and API route starts here.
+- `src/lib/auth/getUser.ts` maps the Clerk account to a row in the `users` table (role: `guest` / `host` / `admin`).
+- `src/lib/auth/redirect.ts` then sends each role to its own area: `(public)`, `(host)` or `(admin)`.
 - The sign-in / sign-up / verify / onboarding pages live together in `(auth)/`; their endpoints are `/api/auth/*`.
 
 ## Getting Started
@@ -156,5 +156,5 @@ npm run build
 - **No ClerkProvider**: Auth is handled server-side via cookie-based JWT parsing and Clerk API verification. No Clerk React SDK in the client bundle.
 - **Custom PgQuery class**: Replaces the Supabase JS SDK with a lightweight query builder over a raw `pg` pool, mimicking `from().select().eq()` while compiling to parameterised SQL.
 - **The DB owns correctness**: concurrency, capacity, and payment idempotency live in Postgres, not fragile JS.
-- **Money is integer kobo** — never floats, never client-supplied totals; shared math lives in `src/lib/bookings/pricing.js`.
+- **Money is integer kobo** — never floats, never client-supplied totals; shared math lives in `src/lib/bookings/pricing.ts`.
 - **No guest identity**: every booking and group-plan write requires a real Clerk account.
