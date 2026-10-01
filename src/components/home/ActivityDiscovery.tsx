@@ -16,7 +16,11 @@ interface ActivityDiscoveryProps {
  */
 export default function ActivityDiscovery({ gate }: ActivityDiscoveryProps) {
   return (
-    <section aria-labelledby="activities-title" className="surface-paper">
+    <section
+      aria-labelledby="activities-title"
+      className="surface-paper"
+      style={{ borderBlockStart: "1px solid var(--line)", borderBlockEnd: "1px solid var(--line)" }}
+    >
       <div className="page section">
         <div className="section-head">
           <h2 id="activities-title" className="section-title t-1 text-h2">

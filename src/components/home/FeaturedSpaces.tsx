@@ -83,7 +83,7 @@ export default function FeaturedSpaces({
   exploreLabel = "Explore all",
   exploreHref = "/listings",
 }: FeaturedSpacesProps) {
-  const surfaceClass = surface === "haze" ? "surface-haze surface-grain" : "surface-paper";
+  const surfaceClass = surface === "haze" ? "surface-haze surface-grain" : "surface-paper wash-haze";
 
   return (
     <section aria-labelledby={`${sectionId}-title`} className={surfaceClass}>
@@ -116,11 +116,15 @@ export default function FeaturedSpaces({
               {emptySubtitle || "We are onboarding hosts now."}
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Link href="/sign-up" onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/sign-up")} className="btn w-full sm:w-auto">
-                Become a host
-              </Link>
-              <Link href="/notify" className="btn-quiet w-full sm:w-auto">
+              <Link href="/notify" className="btn w-full sm:w-auto">
                 Get notified
+              </Link>
+              <Link
+                href="/sign-up"
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/sign-up")}
+                className="btn-quiet w-full sm:w-auto"
+              >
+                Become a host
               </Link>
             </div>
           </div>

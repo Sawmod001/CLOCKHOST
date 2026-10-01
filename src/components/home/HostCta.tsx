@@ -21,7 +21,7 @@ export default function HostCta({ gate }: HostCtaProps) {
   const shortlet = IMAGES.hostShortlet;
 
   return (
-    <section aria-labelledby="host-title" className="surface-paper">
+    <section aria-labelledby="host-title" className="surface-paper weave-soft">
       <div className="page section--lg">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
