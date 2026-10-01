@@ -1,0 +1,219 @@
+/* ClockHost rebrand tokens, v2. Replaces tokens.css. Tailwind v4.
+   Colours derived in OKLCH, sRGB hex shown for reference.
+   Do not add colours, fonts, gradients or effects that are not in this file. */
+
+@theme {
+  /* Colour */
+  --color-paper: #ffffff;
+  --color-haze: #f0f4f7;    /* oklch(0.965 0.006 230) */
+  --color-kola: #291411;    /* oklch(0.22 0.035 28)   text, footer */
+  --color-zobo: #80183d;    /* oklch(0.40 0.14 5)     primary, star surface */
+  --color-guava: #db546d;   /* oklch(0.63 0.17 12)    gradient middle, graphics only */
+  --color-mango: #f1af57;   /* oklch(0.80 0.13 72)    gradient end, graphics only */
+
+  /* Fonts (wired in layout.tsx) */
+  --font-display: var(--font-display), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-body), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-figures: var(--font-figures), "Arial Narrow", sans-serif;
+
+  /* Type scale (fluid). Display is an expanded face, so sizes are smaller than a grotesque. */
+  --text-hero: clamp(2.25rem, 1.2rem + 4vw, 4.25rem);
+  --text-hero--line-height: 1.04;
+  --text-hero--letter-spacing: -0.01em;
+  --text-section: clamp(2rem, 1.3rem + 3vw, 3.5rem);
+  --text-section--line-height: 1.06;
+  --text-h2: clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem);
+  --text-h2--line-height: 1.1;
+  --text-h3: clamp(1.25rem, 1.1rem + 0.8vw, 1.75rem);
+  --text-h3--line-height: 1.2;
+  --text-lead: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  --text-lead--line-height: 1.5;
+  --text-body: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-body--line-height: 1.6;
+  --text-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --text-small--line-height: 1.5;
+  --text-figure: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  --text-figure--line-height: 0.9;
+
+  /* Radii: two only. Buttons are pills. */
+  --radius-panel: 28px;
+  --radius-control: 12px;
+}
+
+:root {
+  --paper: #ffffff;
+  --haze: #f0f4f7;
+  --kola: #291411;
+  --zobo: #80183d;
+  --guava: #db546d;
+  --mango: #f1af57;
+
+  /* Text ladder on light surfaces */
+  --fg-1: var(--kola);
+  --fg-2: color-mix(in srgb, var(--kola) 74%, transparent);
+  --fg-3: color-mix(in srgb, var(--kola) 66%, transparent);
+  --line: rgb(41 20 17 / 0.12);
+
+  /* Layout */
+  --header-h: 72px;
+  --content: 77.5rem;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --gap: clamp(1rem, 2vw, 2rem);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Spacing */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-section: clamp(5rem, 3.5rem + 7vw, 9.5rem);
+  --space-section-lg: clamp(6.5rem, 4rem + 10vw, 13rem);
+}
+
+/* Surfaces */
+.surface-paper { background: var(--paper); color: var(--fg-1); }
+.surface-haze  { background: var(--haze);  color: var(--fg-1); }
+
+.surface-zobo {
+  --fg-1: #ffffff;
+  --fg-2: rgb(255 255 255 / 0.80);
+  --fg-3: rgb(255 255 255 / 0.70);
+  --line: rgb(255 255 255 / 0.16);
+  background: var(--zobo);
+  color: var(--fg-1);
+}
+
+.surface-kola {
+  --fg-1: #ffffff;
+  --fg-2: rgb(255 255 255 / 0.80);
+  --fg-3: rgb(255 255 255 / 0.70);
+  --line: rgb(255 255 255 / 0.16);
+  background: var(--kola);
+  color: var(--fg-1);
+}
+
+/* Paper grain. Static, inside the section, never fixed, never animated. */
+.surface-grain { position: relative; isolation: isolate; }
+.surface-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.surface-zobo.surface-grain::before,
+.surface-kola.surface-grain::before { opacity: 0.08; mix-blend-mode: screen; }
+
+/* The one gradient family: zobo, guava, mango. Blended in OKLCH, lit from the right.
+   Used in exactly two places: the star section stage panel and the footer selvedge.
+   No text on Guava or Mango. White text only on the first 30% of the ramp. */
+.gradient-strip {
+  position: relative;
+  isolation: isolate;
+  /* sRGB fallback first, then the OKLCH version wins where supported */
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.06) 0 1px, transparent 1px 3.25rem),
+    linear-gradient(105deg, #80183d 0%, #db546d 55%, #f1af57 100%);
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.06) 0 1px, transparent 1px 3.25rem),
+    linear-gradient(in oklch 105deg, var(--zobo) 0%, var(--guava) 55%, var(--mango) 100%);
+}
+.gradient-strip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.08;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.gradient-panel { border-radius: var(--radius-panel); overflow: hidden; }
+.gradient-selvedge { block-size: 8px; inline-size: 100%; }
+
+/* Optional quiet wash for Haze sections */
+.wash-haze {
+  background: linear-gradient(180deg, var(--paper), var(--haze) 35%);
+  background: linear-gradient(in oklab 180deg, var(--paper), var(--haze) 35%);
+}
+
+/* Text levels */
+.t-1 { color: var(--fg-1); }
+.t-2 { color: var(--fg-2); }
+.t-3 { color: var(--fg-3); }
+
+/* Display type: expanded slab, 28px and above only. Never bold-synthesised. */
+.font-display-face {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-synthesis: none;
+  text-wrap: balance;
+}
+
+/* Prices and figures: digits in Teko, currency sign and words in the text face */
+.fig {
+  font-family: var(--font-figures);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.price { display: inline-flex; align-items: baseline; gap: 0.15em; color: var(--fg-1); }
+.price__cur { font-family: var(--font-body); font-weight: 500; font-size: 0.8em; }
+.price__num { font-family: var(--font-figures); font-weight: 600; font-size: 1.35em; letter-spacing: 0.01em; }
+.price__unit { font-family: var(--font-body); font-size: 0.85em; color: var(--fg-2); margin-inline-start: 0.35em; }
+
+/* Focus */
+:focus-visible { outline: 2px solid var(--zobo); outline-offset: 3px; border-radius: 6px; }
+.surface-zobo :focus-visible,
+.surface-kola :focus-visible { outline-color: var(--mango); }
+
+/* Buttons: pill, no arrow, one primary per view */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 48px;
+  padding-inline: 1.75rem;
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  background: var(--zobo);
+  color: #ffffff;
+  transition: background-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+.btn:hover { background: color-mix(in srgb, var(--zobo) 90%, black); }
+.btn:active { transform: translateY(1px); }
+.surface-zobo .btn,
+.surface-kola .btn { background: #ffffff; color: var(--kola); }
+.surface-zobo .btn:hover,
+.surface-kola .btn:hover { background: color-mix(in srgb, #ffffff 90%, var(--mango)); }
+
+/* Quiet text link */
+.link {
+  color: var(--fg-1);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.2s;
+}
+.link:hover { text-decoration-color: currentColor; }
+
+/* Hairline divider list, replaces card grids */
+.rule-list > * + * { border-block-start: 1px solid var(--line); }
+
+/* Reduced motion for CSS (Framer Motion needs MotionConfig reducedMotion="user") */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
