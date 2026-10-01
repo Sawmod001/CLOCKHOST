@@ -108,23 +108,19 @@ export default function FeaturedSpaces({
             ))}
           </div>
         ) : listings.length === 0 ? (
-          <div className="mt-10 max-w-xl">
-            <h3 className="font-display-face t-1 text-h3">
+          <div className="mt-8 max-w-xl">
+            <h3 className="section-title t-1 text-h3">
               {emptyTitle || "No spaces yet"}
             </h3>
-            <p className="t-2 mt-3 text-body">
+            <p className="section-sub t-2 mt-3">
               {emptySubtitle || "We are onboarding hosts now."}
             </p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-8">
-              <Link href="/notify" className="link w-fit py-2">
-                Get notified
-              </Link>
-              <Link
-                href="/sign-up"
-                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/sign-up")}
-                className="link w-fit py-2"
-              >
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link href="/sign-up" onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/sign-up")} className="btn w-full sm:w-auto">
                 Become a host
+              </Link>
+              <Link href="/notify" className="btn-quiet w-full sm:w-auto">
+                Get notified
               </Link>
             </div>
           </div>
