@@ -54,3 +54,6 @@ docs/
 !README.md
 
 .vercel
+
+# local dev logs
+*.log
