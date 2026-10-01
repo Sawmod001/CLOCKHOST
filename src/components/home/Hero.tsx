@@ -19,17 +19,12 @@ const SUB =
  * No chip, no fine print. CSS-only load sequence (<600ms, once).
  */
 export default function Hero({ gate }: HeroProps) {
-  const photo: SiteImage = IMAGES.heroPrimary ?? {
-    id: "hero-primary",
-    src: "/images/hero/hero-primary-4x5.jpg",
-    width: 736,
-    height: 920,
-    alt: "Guests toasting drinks at a warmly lit bar",
-    source: "owner-supplied",
-  };
+  const slides = [IMAGES.heroPrimary, IMAGES.heroSecond, IMAGES.heroThird].filter(
+    (s): s is SiteImage => !!s
+  );
 
   return (
-    <section aria-labelledby="hero-title" className="surface-paper full-bleed">
+    <section aria-labelledby="hero-title" className="surface-paper full-bleed hero-weave">
       <div className="hero">
         <div className="hero__copy">
           <h1
@@ -39,8 +34,8 @@ export default function Hero({ gate }: HeroProps) {
             Find a space that fits{" "}
             <span className="block">your plans.</span>
           </h1>
-          <p className="t-2 mt-6 max-w-[46ch] text-lead" aria-label={SUB}>
-            {SUB.split(" ").map((word, i, arr) => (
+          <p className="hero-sub mt-6" aria-label={SUB}>
+            {SUB.split(" ").map((word, i) => (
               <span
                 key={i}
                 aria-hidden="true"
@@ -48,7 +43,6 @@ export default function Hero({ gate }: HeroProps) {
                 style={{ animationDelay: `${0.3 + i * 0.04}s` }}
               >
                 {word}
-                {i < arr.length - 1 ? " " : ""}
               </span>
             ))}
           </p>
@@ -63,16 +57,22 @@ export default function Hero({ gate }: HeroProps) {
           </div>
         </div>
         <div className="hero__media hero-photo-load">
-          <Image
-            src={photo.src}
-            alt={photo.alt}
-            width={photo.width}
-            height={photo.height}
-            priority
-            sizes="(min-width: 900px) 55vw, 100vw"
-            className="h-full w-full object-cover"
-            style={{ objectPosition: photo.objectPosition ?? "50% 28%" }}
-          />
+          <div className="hero-slides">
+          {slides.map((slide, i) => (
+            <div key={slide.id} className="hero-slide" aria-hidden={i !== 0}>
+              <Image
+                src={slide.src}
+                alt={slide.alt}
+                fill
+                priority={i === 0}
+                loading={i === 0 ? undefined : "lazy"}
+                sizes="(min-width: 900px) 55vw, 100vw"
+                className="object-cover"
+                style={{ objectPosition: slide.objectPosition ?? "50% 30%" }}
+              />
+            </div>
+          ))}
+          </div>
         </div>
       </div>
     </section>

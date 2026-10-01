@@ -1,6 +1,6 @@
+"use client";
+
 import Link from "next/link";
-import { SectionContainer, SectionHeading } from "./Section";
-import Reveal from "./Reveal";
 import { ACTIVITIES } from "@/config/homepage";
 
 export type GateHandler = (e: React.MouseEvent, href: string) => void;
@@ -9,29 +9,46 @@ interface ActivityDiscoveryProps {
   gate: GateHandler;
 }
 
+/**
+ * ActivityDiscovery — docs/02 (Activities) + docs/03.
+ * Typographic index, not chips. Hairline rows, hover shifts 8px with
+ * underline. No counts rendered (none are real yet). No motion library.
+ */
 export default function ActivityDiscovery({ gate }: ActivityDiscoveryProps) {
   return (
-    <SectionContainer className="bg-[var(--color-night)] py-12 sm:py-16">
-      <SectionHeading
-        eyebrow="Explore by activity"
-        title="Looking for something specific?"
-        subtitle="Browse by how you want to spend your time not by internal business types."
-      />
+    <section aria-labelledby="activities-title" className="surface-paper">
+      <div className="page section">
+        <div className="section-head">
+          <h2 id="activities-title" className="section-title t-1 text-h2">
+            Browse by activity
+          </h2>
+          <p className="section-sub t-2">Choose by how you want to spend your time.</p>
+        </div>
 
-      {/* Desktop: horizontal cards, Mobile: horizontal scroll per §19 */}
-      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none sm:grid sm:grid-cols-4 lg:grid-cols-7 sm:overflow-visible sm:pb-0">
-        {ACTIVITIES.map((act, i: number) => (
-          <Reveal key={act.label} delay={i * 40} className="shrink-0 sm:shrink">
-            <Link
-              href={act.href}
-              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, act.href)}
-              className="flex h-[72px] w-[148px] shrink-0 items-center justify-center rounded-2xl border border-[var(--color-night-border)] bg-[var(--color-night-card)] px-4 text-sm font-semibold text-[var(--color-night-text)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--color-flame-bright)]/40 hover:bg-[var(--color-night-elevated)] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-flame-bright)] sm:w-auto"
-            >
-              {act.label}
-            </Link>
-          </Reveal>
-        ))}
+        <ul className="rule-list mt-10">
+          {ACTIVITIES.map((act) => (
+            <li key={act.label}>
+              <Link
+                href={act.href}
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, act.href)}
+                className="group flex min-h-[64px] items-center py-4"
+              >
+                <span className="font-display-face t-1 text-h3 transition-transform duration-200 ease-out group-hover:translate-x-2 group-focus-visible:translate-x-2">
+                  {act.label}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="t-3 ml-4 h-px w-8 self-center transition-all duration-200 group-hover:w-12"
+                  style={{ background: "currentColor", opacity: 0.4 }}
+                />
+                <span className="t-2 ml-auto text-small underline-offset-4 group-hover:underline">
+                  Explore
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
-    </SectionContainer>
+    </section>
   );
 }

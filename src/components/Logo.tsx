@@ -5,11 +5,11 @@ interface LogoProps {
   className?: string;
   variant?: "light" | "dark" | (string & {});
   href?: string;
-  /** Wordmark accent colour. Defaults to legacy flame; rebrand passes zobo. */
+  /** Wordmark accent colour. Zobo everywhere for one-brand rhythm. */
   accentClassName?: string;
 }
 
-export default function Logo({ size = "md", className = "", variant = "light", href = "/", accentClassName = "text-[var(--color-flame)]" }: LogoProps) {
+export default function Logo({ size = "md", className = "", variant = "light", href = "/", accentClassName = "text-[var(--zobo)]" }: LogoProps) {
   const sizes: Record<string, string> = {
     sm: "h-7 w-7",
     md: "h-8 w-8",

@@ -1,0 +1,688 @@
+
+> clockhost-app@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.10 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.15.108:3000
+- Environments: .env.local, .env
+✓ Ready in 8.9s
+○ Compiling middleware ...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+○ Compiling / ...
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 15.3s (next.js: 9.7s, proxy.ts: 1194ms, application-code: 4.5s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 4.9s (next.js: 2.0s, proxy.ts: 669ms, application-code: 2.2s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 1019ms (next.js: 23ms, proxy.ts: 43ms, application-code: 952ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+○ Compiling /api/auth/profile-status ...
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 4.6s (next.js: 4.5s, proxy.ts: 14ms, application-code: 96ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 262ms (next.js: 215ms, proxy.ts: 21ms, application-code: 27ms)
+ GET /api/listings?limit=12 200 in 6.9s (next.js: 4.0s, proxy.ts: 17ms, application-code: 2.8s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 25.0s (next.js: 8.1s, proxy.ts: 4.9s, application-code: 11.9s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 51s (next.js: 5.0s, proxy.ts: 273ms, application-code: 46s)
+ GET / 200 in 30.0s (next.js: 11.7s, proxy.ts: 2.0s, application-code: 16.3s)
+ GET / 200 in 20.7s (next.js: 19.6s, proxy.ts: 32ms, application-code: 1145ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+[browser] Failed to fetch RSC payload for http://localhost:3000/. Falling back to browser navigation. TypeError: Failed to fetch
+ GET / 200 in 9.2s (next.js: 1998ms, proxy.ts: 372ms, application-code: 6.9s)
+ GET / 200 in 7.5s (next.js: 3.1s, proxy.ts: 36ms, application-code: 4.3s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 14.2s (next.js: 1262ms, proxy.ts: 6.2s, application-code: 6.7s)
+ GET / 200 in 10.6s (next.js: 5.1s, proxy.ts: 2.7s, application-code: 2.8s)
+ GET / 200 in 10.6s (next.js: 2.3s, proxy.ts: 2.7s, application-code: 5.6s)
+ GET / 200 in 10.7s (next.js: 4.2s, proxy.ts: 2.7s, application-code: 3.8s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 4.2s (next.js: 2.4s, proxy.ts: 677ms, application-code: 1121ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 5.2s (next.js: 4.6s, proxy.ts: 39ms, application-code: 548ms)
+ GET /api/listings?limit=12 200 in 6.9s (next.js: 3.7s, proxy.ts: 35ms, application-code: 3.2s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 10.4s (next.js: 4.1s, proxy.ts: 81ms, application-code: 6.2s)
+ GET / 200 in 12.6s (next.js: 8.4s, proxy.ts: 2.1s, application-code: 2.1s)
+ GET / 200 in 12.6s (next.js: 7.4s, proxy.ts: 2.1s, application-code: 3.1s)
+ GET / 200 in 12.7s (next.js: 6.1s, proxy.ts: 2.1s, application-code: 4.5s)
+ GET / 200 in 52s (next.js: 21.8s, proxy.ts: 38ms, application-code: 29.8s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 34.4s (next.js: 4.2s, proxy.ts: 131ms, application-code: 30.1s)
+ GET / 200 in 1482ms (next.js: 109ms, proxy.ts: 172ms, application-code: 1202ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 1064ms (next.js: 92ms, proxy.ts: 363ms, application-code: 610ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 882ms (next.js: 57ms, proxy.ts: 20ms, application-code: 805ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 1724ms (next.js: 601ms, proxy.ts: 437ms, application-code: 686ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 1233ms (next.js: 60ms, proxy.ts: 24ms, application-code: 1150ms)
+✓ Finished writing to filesystem cache in 10.3s
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 9.3s (next.js: 194ms, proxy.ts: 98ms, application-code: 9.0s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 2.8s (next.js: 2.7s, proxy.ts: 38ms, application-code: 114ms)
+ GET /api/listings?limit=12 200 in 5.6s (next.js: 2.1s, proxy.ts: 40ms, application-code: 3.5s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 3.5s (next.js: 2.3s, proxy.ts: 578ms, application-code: 698ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 3.6s (next.js: 39ms, proxy.ts: 13ms, application-code: 3.6s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 288ms (next.js: 29ms, proxy.ts: 15ms, application-code: 245ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /sign-up?next=%2F%23how-it-works 200 in 2.9s (next.js: 1658ms, proxy.ts: 19ms, application-code: 1250ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 1642ms (next.js: 1192ms, proxy.ts: 310ms, application-code: 141ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 280ms (next.js: 58ms, proxy.ts: 72ms, application-code: 150ms)
+ GET /api/listings?limit=12 200 in 5.7s (next.js: 2.5s, proxy.ts: 310ms, application-code: 2.9s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/listings?limit=12 200 in 682ms (next.js: 35ms, proxy.ts: 14ms, application-code: 633ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 3.8s (next.js: 269ms, proxy.ts: 95ms, application-code: 3.4s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 21.2s (next.js: 4.7s, proxy.ts: 7.7s, application-code: 8.8s)
+ GET / 200 in 13.5s (next.js: 12.1s, proxy.ts: 245ms, application-code: 1161ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 813ms (next.js: 31ms, proxy.ts: 47ms, application-code: 735ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 11.7s (next.js: 4.2s, proxy.ts: 3.2s, application-code: 4.2s)
+ GET / 200 in 1423ms (next.js: 154ms, proxy.ts: 20ms, application-code: 1249ms)
+ GET / 200 in 783ms (next.js: 91ms, proxy.ts: 25ms, application-code: 666ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 2.1s (next.js: 55ms, proxy.ts: 66ms, application-code: 1972ms)
+ GET / 200 in 1254ms (next.js: 246ms, proxy.ts: 24ms, application-code: 985ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 550ms (next.js: 82ms, proxy.ts: 66ms, application-code: 402ms)
+✓ Finished writing to filesystem cache in 15.5s
+✓ Finished filesystem cache database compaction in 19.8s
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 8.8s (next.js: 407ms, proxy.ts: 330ms, application-code: 8.1s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 2.5s (next.js: 426ms, proxy.ts: 124ms, application-code: 1980ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 3.1s (next.js: 3.0s, proxy.ts: 22ms, application-code: 96ms)
+ GET /api/listings?limit=12 200 in 4.9s (next.js: 2.1s, proxy.ts: 21ms, application-code: 2.8s)
+✓ Compiled in 3182.5s
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 6.4s (next.js: 810ms, proxy.ts: 422ms, application-code: 5.2s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 731ms (next.js: 257ms, proxy.ts: 64ms, application-code: 410ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/listings?limit=12 200 in 2.8s (next.js: 696ms, proxy.ts: 25ms, application-code: 2.1s)
+[browser] Image with src "/images/hero/hero-primary-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 43s (next.js: 16.9s, proxy.ts: 15.8s, application-code: 10.7s)
+ GET / 200 in 26.4s (next.js: 13.6s, proxy.ts: 4.3s, application-code: 8.6s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 23.9s (next.js: 11.9s, proxy.ts: 947ms, application-code: 11.0s)
+ GET / 200 in 24.6s (next.js: 15.4s, proxy.ts: 953ms, application-code: 8.3s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 8.3s (next.js: 3.1s, proxy.ts: 244ms, application-code: 5.0s)
+ GET / 200 in 3.6s (next.js: 469ms, proxy.ts: 737ms, application-code: 2.4s)
+[browser] Image with src "/images/hero/hero-second-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+[browser] Image with src "/images/hero/hero-third-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+✓ Compiled in 1884.7s
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20.2s (next.js: 368ms, proxy.ts: 870ms, application-code: 19.0s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 9.0s (next.js: 1220ms, proxy.ts: 1314ms, application-code: 6.5s)
+[browser] Image with src "/images/hero/hero-primary-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+[browser] Image with src "/images/hero/hero-third-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+[browser] Image with src "/images/hero/hero-second-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+✓ Finished writing to filesystem cache in 16.8s
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 7.8s (next.js: 1506ms, proxy.ts: 1746ms, application-code: 4.6s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 1837ms (next.js: 1486ms, proxy.ts: 32ms, application-code: 318ms)
+[browser] Image with src "/images/hero/hero-primary-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+[browser] Image with src "/images/hero/hero-second-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+[browser] Image with src "/images/hero/hero-third-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/listings?limit=12 200 in 6.1s (next.js: 2.8s, proxy.ts: 157ms, application-code: 3.1s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 2.9s (next.js: 288ms, proxy.ts: 48ms, application-code: 2.6s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+[browser] Image with src "/images/hero/hero-primary-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+[browser] Image with src "/images/hero/hero-second-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 257ms (next.js: 106ms, proxy.ts: 20ms, application-code: 132ms)
+[browser] Image with src "/images/hero/hero-third-4x5.jpg" has "fill" and parent element with invalid "position". Provided "static" should be one of absolute,fixed,relative. (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/listings?limit=12 200 in 2.5s (next.js: 162ms, proxy.ts: 248ms, application-code: 2.1s)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /notify 200 in 3.6s (next.js: 3.1s, proxy.ts: 21ms, application-code: 456ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 355ms (next.js: 32ms, proxy.ts: 15ms, application-code: 308ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET /api/auth/profile-status 401 in 815ms (next.js: 313ms, proxy.ts: 43ms, application-code: 459ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 13.1s (next.js: 5.2s, proxy.ts: 4.0s, application-code: 3.9s)
+ GET / 200 in 1443ms (next.js: 257ms, proxy.ts: 39ms, application-code: 1148ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 15.2s (next.js: 8.6s, proxy.ts: 1367ms, application-code: 5.2s)
+ GET / 200 in 2.4s (next.js: 839ms, proxy.ts: 246ms, application-code: 1269ms)
+⚠ ./
+Failed to find font override values for font `Atkinson Hyperlegible Next`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 1288ms (next.js: 251ms, proxy.ts: 106ms, application-code: 930ms)
+✓ Compiled in 1704.4s
+✓ Finished filesystem cache database compaction in 76s
+✓ Finished writing to filesystem cache in 17.0s
+✓ Finished writing to filesystem cache in 23.9s
+○ Compiling / ...
+ GET / 200 in 4.8min (next.js: 2.8min, proxy.ts: 5.3s, application-code: 115s)
+⚠ Server is approaching the used memory threshold, restarting...
+▲ Next.js 16.2.10 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.15.108:3000
+- Environments: .env.local, .env
+✓ Ready in 6.1s
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+ GET / 200 in 26.0s (next.js: 6.0s, proxy.ts: 1946ms, application-code: 18.1s)
+ GET / 200 in 3.1s (next.js: 169ms, proxy.ts: 99ms, application-code: 2.9s)
+ GET /api/auth/profile-status 401 in 10.3s (next.js: 9.8s, proxy.ts: 153ms, application-code: 332ms)
+ GET /api/listings?limit=12 200 in 12.5s (next.js: 8.3s, proxy.ts: 43ms, application-code: 4.2s)
+ GET /sign-up?next=%2F%23how-it-works 200 in 2.7s (next.js: 1010ms, proxy.ts: 786ms, application-code: 939ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior (file://C:/Users/PC/Desktop/CLOCKHOST/HOSTME/.next/dev/static/chunks/node_modules_next_dist_1ybzpk2._.js:2477:13)
+ GET /api/auth/profile-status 401 in 717ms (next.js: 168ms, proxy.ts: 167ms, application-code: 383ms)
+ GET /api/auth/profile-status 401 in 482ms (next.js: 197ms, proxy.ts: 152ms, application-code: 134ms)
+ GET /api/listings?limit=12 200 in 3.1s (next.js: 634ms, proxy.ts: 150ms, application-code: 2.3s)
+ GET /api/listings?limit=12 200 in 1301ms (next.js: 18ms, proxy.ts: 20ms, application-code: 1263ms)
+ GET /sign-up?next=%2F%23how-it-works 200 in 708ms (next.js: 44ms, proxy.ts: 18ms, application-code: 646ms)
+ GET /api/auth/profile-status 401 in 468ms (next.js: 36ms, proxy.ts: 23ms, application-code: 409ms)
+ GET /api/auth/profile-status 401 in 722ms (next.js: 481ms, proxy.ts: 137ms, application-code: 105ms)
+ GET /api/listings?limit=12 200 in 1531ms (next.js: 173ms, proxy.ts: 98ms, application-code: 1260ms)
+ GET / 200 in 3.5s (next.js: 2.1s, proxy.ts: 704ms, application-code: 686ms)
+ GET / 200 in 670ms (next.js: 194ms, proxy.ts: 20ms, application-code: 456ms)
+ GET / 200 in 509ms (next.js: 45ms, proxy.ts: 19ms, application-code: 445ms)
+ GET / 200 in 742ms (next.js: 107ms, proxy.ts: 36ms, application-code: 600ms)
+ GET / 200 in 967ms (next.js: 227ms, proxy.ts: 67ms, application-code: 673ms)

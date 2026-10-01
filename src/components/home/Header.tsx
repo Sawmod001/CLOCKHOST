@@ -55,7 +55,7 @@ export default function Header({ gate }: HeaderProps) {
           minHeight: "var(--header-h)",
         }}
       >
-        <Logo href="/" variant="light" accentClassName="text-[var(--kola)]" />
+        <Logo href="/" variant="light" accentClassName="text-[var(--zobo)]" />
 
         <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
           {LINKS.map((link) => (

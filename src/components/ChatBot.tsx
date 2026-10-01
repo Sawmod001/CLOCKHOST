@@ -193,7 +193,7 @@ export default function ChatBot() {
 
       <button onClick={() => setOpen(!open)}
         className={`fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full shadow-lg transition-all duration-300 hover:scale-105 active:scale-95 ${
-          open ? "bg-[#B91C1C] rotate-90" : "bg-[var(--color-primary)]"
+            open ? "bg-[var(--color-primary)] rotate-90" : "bg-[var(--color-primary)]"
         } text-white`}>
         {open ? <X size={22} /> : <MessageCircle size={22} />}
       </button>

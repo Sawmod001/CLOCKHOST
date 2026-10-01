@@ -1,7 +1,8 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, Building2 } from "lucide-react";
-import Reveal from "./Reveal";
-import { HOST_CTA } from "@/config/homepage";
+import Image from "next/image";
+import { IMAGES } from "@/config/images";
 
 export type GateHandler = (e: React.MouseEvent, href: string) => void;
 
@@ -9,60 +10,83 @@ interface HostCtaProps {
   gate: GateHandler;
 }
 
+/**
+ * HostCta — docs/02 (Host CTA) + docs/03.
+ * Paper. One primary button, two overlapping photos (second offset 24px —
+ * controlled irregularity), host types as an open hairline list.
+ * No "See how hosting works" link: no real destination exists yet (TODO).
+ */
 export default function HostCta({ gate }: HostCtaProps) {
-  return (
-    <section className="relative overflow-hidden bg-[var(--color-night)]">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(ellipse_60%_90%_at_10%_0%,rgba(232,119,79,0.18)_0%,transparent_60%)]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(ellipse_50%_80%_at_100%_100%,rgba(217,168,102,0.14)_0%,transparent_55%)]"
-      />
-      <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <Reveal>
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--color-gold)]">
-                <Building2 size={14} aria-hidden="true" /> For space owners
-              </span>
-              <h2 className="font-serif-display mt-5 text-3xl font-semibold leading-tight text-[var(--color-night-text)] sm:text-4xl">
-                {HOST_CTA.title}
-              </h2>
-              <p className="mt-4 max-w-lg text-sm leading-relaxed text-[var(--color-night-muted)] sm:text-base">
-                {HOST_CTA.subtitle}
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href={HOST_CTA.primaryCta.href}
-                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, HOST_CTA.primaryCta.href)}
-                  className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-flame)] px-7 py-3.5 font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-[var(--color-flame-bright)] sm:w-auto"
-                >
-                  {HOST_CTA.primaryCta.label} <ArrowRight size={18} aria-hidden="true" />
-                </Link>
-                <Link
-                  href={HOST_CTA.secondaryCta.href}
-                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, HOST_CTA.secondaryCta.href)}
-                  className="btn-outline-night inline-flex min-h-[44px] w-full items-center justify-center px-7 py-3.5 sm:w-auto"
-                >
-                  {HOST_CTA.secondaryCta.label}
-                </Link>
-              </div>
-            </div>
+  const venue = IMAGES.hostVenue;
+  const shortlet = IMAGES.hostShortlet;
 
-            <div className="grid grid-cols-1 gap-4 min-[480px]:grid-cols-2">
-              {HOST_CTA.perks.map((perk, i: number) => (
-                <Reveal key={perk.title} delay={i * 80} className="h-full">
-                  <div className="h-full rounded-2xl border border-[var(--color-night-border)] bg-[var(--color-night-card)] p-5">
-                    <p className="text-sm font-semibold text-[var(--color-night-text)]">{perk.title}</p>
-                    <p className="mt-1 text-[11px] leading-relaxed text-[var(--color-night-muted)]">{perk.desc}</p>
-                  </div>
-                </Reveal>
-              ))}
+  return (
+    <section aria-labelledby="host-title" className="surface-paper">
+      <div className="page section--lg">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <h2 id="host-title" className="section-title t-1 text-section">
+              Have a space people would love?
+            </h2>
+            <p className="section-sub t-2 mt-4">
+              List it on ClockHost. Reach guests in Ilorin and get paid
+              securely through Paystack.
+            </p>
+            <div className="mt-8">
+              <Link
+                href="/sign-up"
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/sign-up")}
+                className="btn w-full sm:w-auto"
+              >
+                Become a host
+              </Link>
+              {/* TODO: "See how hosting works" needs a real destination (hosting guide page or anchor). Do not point it at /listings. */}
             </div>
+            <dl className="rule-list mt-10 grid gap-6 sm:grid-cols-2">
+              <div className="pt-4">
+                <dt className="t-1 font-semibold">Venue host</dt>
+                <dd className="section-sub t-2 mt-1">
+                  List one venue or outdoor space, with clear availability and pricing.
+                </dd>
+              </div>
+              <div className="pt-4">
+                <dt className="t-1 font-semibold">Shortlet host</dt>
+                <dd className="section-sub t-2 mt-1">
+                  List several apartments, with monthly pricing and viewings.
+                </dd>
+              </div>
+            </dl>
           </div>
-        </Reveal>
+
+          <div className="grid grid-cols-2 items-start gap-4">
+            {venue && (
+              <span className="relative block aspect-[4/5] overflow-hidden rounded-panel">
+                <Image
+                  src={venue.src}
+                  alt={venue.alt}
+                  fill
+                  loading="lazy"
+                  sizes="(min-width: 900px) 25vw, 45vw"
+                  className="object-cover"
+                  style={{ objectPosition: venue.objectPosition ?? "50% 50%" }}
+                />
+              </span>
+            )}
+            {shortlet && (
+              <span className="relative mt-6 block aspect-[4/5] overflow-hidden rounded-panel">
+                <Image
+                  src={shortlet.src}
+                  alt={shortlet.alt}
+                  fill
+                  loading="lazy"
+                  sizes="(min-width: 900px) 25vw, 45vw"
+                  className="object-cover"
+                  style={{ objectPosition: shortlet.objectPosition ?? "50% 50%" }}
+                />
+              </span>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,12 +1,55 @@
-"use client";
-
-import { useState } from "react";
 import Script from "next/script";
-import { ChevronDown, HelpCircle } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { SectionContainer, SectionHeading } from "./Section";
-import Reveal from "./Reveal";
-import { FAQS } from "@/config/homepage";
+
+interface FaqEntry {
+  q: string;
+  a: string;
+}
+
+// Answers rewritten for clarity (60 words max each) keeping every answer's
+// substance, per docs/03-COPY.md (FAQ). Q8 uses the star-section labels,
+// not backend terms.
+const FAQS: FaqEntry[] = [
+  {
+    q: "What is ClockHost?",
+    a: "ClockHost is a marketplace for discovering and booking venues and shortlet apartments. Browse real spaces with clear photos, pricing and availability, and book securely in naira.",
+  },
+  {
+    q: "How do I book a space?",
+    a: "Find a space you like, pick a date and time, and pay. Shared experiences confirm once you pay. Whole spaces need the host's approval first, then you pay to secure them.",
+  },
+  {
+    q: "What is group booking?",
+    a: "One person pays for the booking and shares it with invited guests. There is nothing to split and nothing to chase. The plan confirms once the group is complete.",
+  },
+  {
+    q: "What types of spaces are available?",
+    a: "Venues for gatherings and celebrations, and furnished shortlets for stays. Every listing shows its type, pricing and availability up front.",
+  },
+  {
+    q: "How do payments work?",
+    a: "Every payment goes through Paystack in naira: cards, USSD, bank transfer or QR. Money moves only on confirmed bookings, and every booking carries a receipt.",
+  },
+  {
+    q: "Can I list my own space?",
+    a: "Sign up as a host, add photos, pricing and availability, then submit for review. Your space goes live once approved.",
+  },
+  {
+    q: "Can I be both a host and a guest?",
+    a: "Yes. One account books and lists. Start as a guest, add hosting anytime, and switch sides whenever you like.",
+  },
+  {
+    q: "What is the difference between booking a spot and booking the whole space?",
+    a: "A spot reserves your place in a shared experience, like karaoke night. The whole space reserves it privately for your period, like an entire hall for a birthday.",
+  },
+  {
+    q: "Is ClockHost available outside Ilorin?",
+    a: "Not yet. We operate in Ilorin, Kwara State, and more Nigerian cities are on the way.",
+  },
+  {
+    q: "What if I need to cancel a booking?",
+    a: "Every listing shows its cancellation terms before you pay: flexible, moderate or strict. Refunds follow those terms.",
+  },
+];
 
 const FAQ_SCHEMA = {
   "@context": "https://schema.org",
@@ -14,88 +57,40 @@ const FAQ_SCHEMA = {
   mainEntity: FAQS.map((faq) => ({
     "@type": "Question",
     name: faq.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: faq.a,
-    },
+    acceptedAnswer: { "@type": "Answer", text: faq.a },
   })),
 };
 
+/**
+ * Faq — docs/02 (FAQ) + docs/03 + docs/06 Prompt 9.
+ * Haze with grain, sticky heading, exclusive <details name="faq">
+ * accordion, hairlines, CSS plus mark. No JS. JSON-LD kept for SEO.
+ */
 export default function Faq() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
   return (
-    <section className="border-t border-[var(--color-night-border-soft)] bg-[var(--color-night)]">
-      <SectionContainer className="py-16 sm:py-24" id="faq">
-        <SectionHeading
-          eyebrow="Support"
-          title="Frequently asked questions"
-          subtitle="Everything you need to know before booking your next place."
-        />
-
-        <div className="mx-auto max-w-3xl space-y-3">
-          {FAQS.map((faq, i: number) => {
-            const isOpen = openFaq === i;
-            return (
-              <Reveal key={i} delay={(i % 2) * 40} className="h-full">
-                <motion.div
-                  className={`overflow-hidden rounded-2xl border bg-[var(--color-night-card)] transition-colors duration-200 ${
-                    isOpen ? "border-[var(--color-flame-bright)]/40 shadow-lg shadow-black/10" : "border-[var(--color-night-border)] hover:border-white/10"
-                  }`}
-                  whileHover={{ y: -1 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                  <button
-                    onClick={() => setOpenFaq(isOpen ? null : i)}
-                    aria-expanded={isOpen}
-                    aria-controls={`faq-panel-${i}`}
-                    id={`faq-tab-${i}`}
-                    className="flex min-h-[44px] w-full items-center justify-between gap-4 px-5 py-5 text-left sm:px-6"
-                  >
-                    <span className="flex min-w-0 items-center gap-3">
-                      <span className={`hidden h-8 w-8 shrink-0 items-center justify-center rounded-lg sm:flex ${isOpen ? "bg-[var(--color-flame)] text-white" : "bg-white/5 text-[var(--color-night-muted)]"}`}>
-                        <HelpCircle size={14} aria-hidden="true" />
-                      </span>
-                      <span className="min-w-0 break-words text-[15px] font-semibold leading-snug text-[var(--color-night-text)]">
-                        {faq.q}
-                      </span>
-                    </span>
-                    <motion.span
-                      animate={{ rotate: isOpen ? 180 : 0, backgroundColor: isOpen ? "rgba(232,74,42,0.15)" : "rgba(255,255,255,0.05)" }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
-                    >
-                      <ChevronDown
-                        size={16}
-                        style={{ color: "var(--color-flame-bright)" }}
-                        aria-hidden="true"
-                      />
-                    </motion.span>
-                  </button>
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        id={`faq-panel-${i}`}
-                        role="region"
-                        aria-labelledby={`faq-tab-${i}`}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.32, ease: [0.21, 0.47, 0.32, 0.98] }}
-                        className="overflow-hidden"
-                      >
-                        <div className="border-t border-[var(--color-night-border-soft)] px-5 pb-5 pt-4 sm:px-6">
-                          <p className="text-sm leading-relaxed text-[var(--color-night-muted)]">{faq.a}</p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              </Reveal>
-            );
-          })}
+    <section aria-labelledby="faq-title" className="surface-haze surface-grain">
+      <div className="page section">
+        <div className="grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-24">
+              <h2 id="faq-title" className="section-title t-1 text-h2">
+                Questions before you book
+              </h2>
+            </div>
+          </div>
+          <div className="lg:col-span-8">
+            {FAQS.map((faq) => (
+              <details key={faq.q} name="faq" className="faq-item group border-t py-5 last:border-b" style={{ borderColor: "var(--line)" }}>
+                <summary className="flex min-h-[44px] cursor-pointer list-none items-center justify-between gap-4 [&::-webkit-details-marker]:hidden">
+                  <span className="t-1 font-semibold leading-snug">{faq.q}</span>
+                  <span className="faq-plus t-1 shrink-0" aria-hidden="true" />
+                </summary>
+                <p className="section-sub t-2 mt-3 max-w-[60ch]">{faq.a}</p>
+              </details>
+            ))}
+          </div>
         </div>
-      </SectionContainer>
+      </div>
 
       <Script id="faq-schema" type="application/ld+json" strategy="lazyOnload">
         {JSON.stringify(FAQ_SCHEMA)}

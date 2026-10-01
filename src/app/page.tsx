@@ -6,7 +6,7 @@ import Header from "@/components/home/Header";
 import Hero from "@/components/home/Hero";
 import ProofStrip from "@/components/home/ProofStrip";
 import ActivityDiscovery from "@/components/home/ActivityDiscovery";
-import FeaturedSpaces from "@/components/home/FeaturedSpaces";
+import FeaturedSpaces, { type FeaturedListing } from "@/components/home/FeaturedSpaces";
 import TwoWaysToBook from "@/components/home/TwoWaysToBook";
 import HowItWorks from "@/components/home/HowItWorks";
 import WhyClockHost from "@/components/home/WhyClockHost";
@@ -69,24 +69,32 @@ export default function HomePage() {
 
         {/* §20 Featured Venues Places worth discovering */}
           <FeaturedSpaces
-            listings={loading ? [] : (venues.slice(0, 6) as any)}
+            listings={loading ? [] : (venues.slice(0, 6) as FeaturedListing[])}
             loading={loading}
             gate={gate}
+            surface="paper"
+            sectionId="venues"
             title="Places worth discovering"
-            subtitle="Real venues, real photos, real availability no fake ratings."
-            emptyTitle="Your next venue is coming"
-            emptySubtitle="We're bringing trusted venues onto ClockHost. Stay close."
+            subtitle="Real venues, real photos, real availability. No fake ratings."
+            emptyTitle="No venues yet"
+            emptySubtitle="We are onboarding our first reviewed venues now. Own a space? List it on ClockHost."
+            exploreLabel="Explore all venues"
+            exploreHref="/listings"
           />
 
           {/* §21 Featured Shortlets Stay somewhere that feels right */}
           <FeaturedSpaces
-            listings={loading ? [] : (shortlets.slice(0, 6) as any)}
+            listings={loading ? [] : (shortlets.slice(0, 6) as FeaturedListing[])}
             loading={loading}
             gate={gate}
+            surface="haze"
+            sectionId="shortlets"
             title="Stay somewhere that feels right"
             subtitle="Furnished apartments with honest pricing, location and amenities."
-            emptyTitle="Your next stay is coming"
-            emptySubtitle="We're onboarding shortlet hosts. The first apartments go live soon."
+            emptyTitle="No shortlets yet"
+            emptySubtitle="We are onboarding shortlet hosts now, and the first apartments go live soon."
+            exploreLabel="Explore all shortlets"
+            exploreHref="/listings"
           />
 
           {/* §23 Booking models Book by capacity / Book the whole space */}

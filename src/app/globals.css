@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #C94428;
-  --color-primary-dark: #A83520;
-  --color-primary-light: #FDE8E0;
-  --color-primary-subtle: #FFF5F2;
+  --color-primary: #80183d;
+  --color-primary-dark: #5F122D;
+  --color-primary-light: #F6E3E9;
+  --color-primary-subtle: #FAF1F4;
   --color-ink: #1A1A2E;
   --color-ink-muted: #6B7280;
   --color-surface: #FFFFFF;
@@ -289,8 +289,8 @@ textarea:focus-visible {
   --text-hero--letter-spacing: -0.02em;
   --text-section: clamp(2rem, 1.3rem + 3vw, 3.5rem);
   --text-section--line-height: 1.06;
-  --text-h2: clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem);
-  --text-h2--line-height: 1.1;
+  --text-h2: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+  --text-h2--line-height: 1.06;
   --text-h3: clamp(1.25rem, 1.1rem + 0.8vw, 1.75rem);
   --text-h3--line-height: 1.2;
   --text-lead: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
@@ -430,6 +430,15 @@ textarea:focus-visible {
   font-weight: 500;
   letter-spacing: 0.01em;
 }
+
+/* Micro-labels: Archivo grotesque for proof/label rows (owner decision).
+   Plain class on purpose: --font-label must NOT live in @theme, where a
+   self-referencing var would go circular. next/font owns the variable. */
+.font-label-face {
+  font-family: var(--font-label), "Arial Narrow", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
 .price { display: inline-flex; align-items: baseline; gap: 0.15em; color: var(--fg-1); }
 .price__cur { font-family: var(--font-body); font-weight: 500; font-size: 0.8em; }
 .price__num { font-family: var(--font-figures); font-weight: 600; font-size: 1.35em; letter-spacing: 0.01em; }
@@ -471,6 +480,60 @@ textarea:focus-visible {
 .link:hover { text-decoration-color: currentColor; }
 
 .rule-list > * + * { border-block-start: 1px solid var(--line); }
+
+/* FAQ plus mark: two bars, the vertical one rotates flat on [open].
+   No icon font, no SVG, no JS. */
+.faq-item summary { border-radius: 6px; }
+.faq-plus { position: relative; width: 14px; height: 14px; flex: none; }
+.faq-plus::before,
+.faq-plus::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 0.25s var(--ease-out);
+}
+.faq-plus::before { left: 0; right: 0; top: 6px; height: 2px; }
+.faq-plus::after { top: 0; bottom: 0; left: 6px; width: 2px; }
+.faq-item[open] .faq-plus::after { transform: rotate(90deg); }
+
+/* Featured listings: container queries + subgrid (docs/02 §3).
+   Lead spans 2 columns at 16:10, rest 4:5. Mobile: scroll-snap row. */
+.listing-row {
+  container: listings / inline-size;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.listing {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: var(--space-2xs);
+  min-width: 0;
+}
+.listing__media { aspect-ratio: 4 / 5; }
+@container listings (min-width: 60rem) {
+  .listing--lead { grid-column: span 2; }
+  .listing--lead .listing__media { aspect-ratio: 16 / 10; }
+}
+@media (max-width: 640px) {
+  .listing-row {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    padding-block-end: var(--space-s);
+  }
+  .listing-row > * {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+  }
+}
 
 .skip-link {
   position: absolute;
@@ -547,6 +610,118 @@ textarea:focus-visible {
   }
 }
 
+/* Hero weave: the aso-oke strip structure as a whisper on paper — faint
+   vertical seams plus a breath of grain, fading toward the photo edge.
+   Paper sections stay otherwise clean. */
+.hero-weave {
+  position: relative;
+  isolation: isolate;
+}
+.hero-weave::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    repeating-linear-gradient(90deg, rgb(41 20 17 / 0.14) 0 2px, transparent 2px 52px),
+    linear-gradient(90deg, rgb(41 20 17 / 0.09) 0%, transparent 62%);
+  opacity: 1;
+  mix-blend-mode: multiply;
+  mask-image: linear-gradient(90deg, black 0%, black 85%, transparent 98%);
+  -webkit-mask-image: linear-gradient(90deg, black 0%, black 85%, transparent 98%);
+}
+
+/* Proof marquee: static unless JS drives it (framer-motion). */
+.proof-track {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  padding-inline-end: 3.5rem;
+  width: max-content;
+}
+/* Hero sub: one step below text-lead in size and a breath below level-2 in
+   colour. Research notes: with an 80px/700 H1, an 18-22px/500 sub competes
+   instead of supporting (squint test fails — two elements shout). Dropping to
+   body size + 400 weight + 70% kola restores the lead/support/fine-print
+   ladder: the eye lands on the H1, then the sub, then the button. 70% kola
+   on paper still clears ~7:1, far above the 4.5:1 floor. */
+.hero-sub {
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: 1.55;
+  max-width: 46ch;
+  color: color-mix(in srgb, var(--kola) 70%, transparent);
+}
+
+/* Section headlines: Padyakke presence at section scale. Same fattening idea
+   as the hero (700 synthesis) but no text stroke — sections earn weight
+   from size,subs earn quiet. Research: H2s set in the same 400 as the old
+   system read thin next to a 700 hero; one step of synthesis restores the
+   ladder without touching the hero's top slot. */
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-synthesis: weight;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+/* Section support lines: body size, regular weight, 70% — mirrors .hero-sub
+   so every section reads headline → support → action in the same voice.
+   Pair with .t-2 so the colour follows the surface (kola on light,
+   white on dark). */
+.section-sub {
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: 1.55;
+  max-width: 46ch;
+}
+
+/* Blueprint grid texture: the floor-plan motif as backdrop for select Paper
+   sections (How it works). Faint architectural grid + grain, static. */
+.texture-grid {
+  position: relative;
+  isolation: isolate;
+}
+.texture-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgb(41 20 17 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(41 20 17 / 0.07) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(120% 100% at 50% 0%, black 30%, transparent 90%);
+  -webkit-mask-image: radial-gradient(120% 100% at 50% 0%, black 30%, transparent 90%);
+}
+
+/* Quiet secondary button: same pill rhythm as .btn, kola hairline instead
+   of fill. For secondary actions beside a primary .btn. */
+.btn-quiet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 48px;
+  padding-inline: 1.75rem;
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--kola);
+  border: 1.5px solid rgb(41 20 17 / 0.25);
+  transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+.btn-quiet:hover {
+  background: rgb(128 24 61 / 0.07);
+  border-color: var(--kola);
+}
+.btn-quiet:active { transform: translateY(1px); }
+
 /* Hero load sequence: CSS-only, run once, under 600ms (docs/01 §8) */
 @keyframes hero-settle {
   from { opacity: 0; transform: translateY(14px); }
@@ -566,6 +741,9 @@ textarea:focus-visible {
 .hero-word {
   display: inline-block;
   opacity: 0;
+  /* margin, not a space character: trailing spaces collapse inside
+     inline-blocks and words fuse together. */
+  margin-right: 0.26em;
   animation: hero-word-in 0.45s var(--ease-out) both;
 }
 @keyframes hero-word-in {
@@ -573,3 +751,25 @@ textarea:focus-visible {
   to { opacity: 1; transform: none; }
 }
 .hero-photo-load { animation: hero-photo-settle 0.6s var(--ease-out) both; }
+
+/* Hero slideshow: three photos in slow rotation (30s cycle, 10s each) with a
+   gentle Ken Burns drift. Gallery pacing research: dwell under ~5s feels
+   hurried and cheap; 8-12s reads calm and confident. CSS-only, zero JS,
+   loops forever. First slide is the LCP image; the rest lazy-load.
+   Reduced motion: static first photo. */
+.hero-slides { position: absolute; inset: 0; }
+.hero-slide { position: absolute; inset: 0; opacity: 0; animation: hero-cycle 30s linear infinite; }
+.hero-slide:nth-child(1) { animation-delay: 0s; }
+.hero-slide:nth-child(2) { animation-delay: 10s; }
+.hero-slide:nth-child(3) { animation-delay: 20s; }
+@keyframes hero-cycle {
+  0% { opacity: 0; transform: scale(1.03); }
+  2% { opacity: 1; }
+  33% { opacity: 1; }
+  36% { opacity: 0; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(1.1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide { animation: none; }
+  .hero-slide:first-child { opacity: 1; }
+}

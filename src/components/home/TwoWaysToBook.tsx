@@ -1,143 +1,142 @@
-import { Armchair as SeatsIcon, LockKeyhole as LockIcon } from "lucide-react";
-import Reveal from "./Reveal";
-import { BOOKING_TYPES } from "@/config/homepage";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import SeatMap, { type SeatMode } from "./SeatMap";
 
 export type GateHandler = (e: React.MouseEvent, href: string) => void;
 
-interface BookingColumn {
-  key: string;
-  icon?: string;
-  tagline?: string;
-  label: string;
-  href: string;
-  cta: string;
+interface StarPanel {
+  mode: SeatMode;
+  step: string;
+  title: string;
+  body: string;
+  link: { label: string; href: string };
 }
 
-interface ColumnHeaderProps {
-  col: BookingColumn;
-}
-
-function ColumnHeader({ col }: ColumnHeaderProps) {
-  const Icon = ICONS[col.icon ?? ""] || SeatsIcon;
-  return (
-    <div className="flex items-center gap-3">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--color-flame)]/15 text-[var(--color-flame-bright)]">
-        <Icon size={20} aria-hidden="true" />
-      </span>
-      <div className="min-w-0">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-night-muted)]">{col.tagline}</p>
-        <h3 className="font-serif-display text-lg font-semibold text-[var(--color-night-text)]">{col.label}</h3>
-      </div>
-    </div>
-  );
-}
-
-const ICONS: Record<string, typeof SeatsIcon> = { seats: SeatsIcon, lock: LockIcon };
-
-interface ColumnCtaProps {
-  col: BookingColumn;
-  gate: GateHandler;
-}
-
-function ColumnCta({ col, gate }: ColumnCtaProps) {
-  return (
-    <button
-      onClick={(e: React.MouseEvent<HTMLButtonElement>) => gate(e, col.href)}
-      className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-[var(--color-flame)] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[var(--color-flame-bright)]"
-    >
-      {col.cta}
-    </button>
-  );
-}
+// Copy from docs/03-COPY.md (Two ways to book), condensed to panel shape.
+const PANELS: StarPanel[] = [
+  {
+    mode: "capacity",
+    step: "1",
+    title: "Book a spot",
+    body: "Reserve space for yourself or your group while the venue stays open to others. Priced per person, paid in naira. Best for hangouts, karaoke and game nights.",
+    link: { label: "Browse spaces you can join", href: "/listings" },
+  },
+  {
+    mode: "exclusive",
+    step: "2",
+    title: "Book the whole space",
+    body: "Reserve an eligible space exclusively for the period you choose. If two guests request the same slot, the first payment wins. Best for birthdays and private gatherings.",
+    link: { label: "Browse spaces you can book whole", href: "/listings" },
+  },
+  {
+    mode: "group",
+    step: "3",
+    title: "Book together",
+    body: "One person pays and shares the booking with invited guests. No split payments to chase, just one clear booking. Best for birthdays and group nights.",
+    link: { label: "Find a group-friendly venue", href: "/group-plans" },
+  },
+];
 
 interface TwoWaysToBookProps {
   gate: GateHandler;
 }
 
+/**
+ * Star section — docs/02 (Star) + docs/03 (Two ways to book).
+ * Zobo surface, sticky gradient stage, three text panels. Active panel via
+ * IntersectionObserver (no scroll listeners). Below lg: stacked, each panel
+ * carries its own small map. Reduced motion swaps states instantly (global
+ * CSS kills the 300ms transitions).
+ */
 export default function TwoWaysToBook({ gate }: TwoWaysToBookProps) {
-  const [capacity, exclusive] = BOOKING_TYPES.columns as unknown as [BookingColumn, BookingColumn];
+  const [active, setActive] = useState<SeatMode>("capacity");
+  const panelRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const mode = entry.target.getAttribute("data-mode");
+            if (mode === "capacity" || mode === "exclusive" || mode === "group") {
+              setActive(mode);
+            }
+          }
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px" }
+    );
+    panelRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section className="border-t border-[var(--color-night-border-soft)] bg-[var(--color-night-soft)]">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-        <div className="grid items-end gap-6 lg:grid-cols-[1fr_1.2fr]">
-          <Reveal>
-            <div>
-              <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[var(--color-gold)]">
-                {BOOKING_TYPES.eyebrow}
-              </p>
-              <h2 className="font-serif-display text-3xl font-semibold tracking-tight text-[var(--color-night-text)] sm:text-4xl">
-                {BOOKING_TYPES.title}
-              </h2>
-            </div>
-          </Reveal>
-          <Reveal delay={80}>
-            <p className="max-w-xl text-sm leading-relaxed text-[var(--color-night-muted)] sm:text-base lg:ml-auto">
-              {BOOKING_TYPES.subtitle}
-            </p>
-          </Reveal>
+    <section aria-labelledby="ways-title" className="surface-zobo surface-grain full-bleed">
+      <div className="page section--lg">
+        <div className="section-head">
+          <h2 id="ways-title" className="section-title t-1 text-h2">
+            Two ways to book.
+          </h2>
+          <p className="section-sub t-2">
+            Every space uses one of two clear booking models. Choose what fits
+            your plans.
+          </p>
         </div>
 
-        <div className="mt-12 grid gap-5 lg:hidden">
-          {[capacity, exclusive].map((col, i: number) => (
-            <Reveal key={col.key} delay={i * 80} className="h-full">
-              <div className="flex h-full flex-col gap-5 rounded-3xl border border-[var(--color-night-border)] bg-[var(--color-night-elevated)] p-6">
-                <ColumnHeader col={col} />
-                <dl className="divide-y divide-[var(--color-night-border-soft)]">
-                  {BOOKING_TYPES.rows.map((row) => (
-                    <div key={row.label} className="py-3.5">
-                      <dt className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-gold)]">
-                        {row.label}
-                      </dt>
-                      <dd className="mt-1 text-sm leading-relaxed text-[var(--color-night-text)]">
-                        {col.key === "capacity" ? row.capacity : row.exclusive}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-                <div className="mt-auto pt-1">
-                  <ColumnCta col={col} gate={gate} />
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal delay={120}>
-          <div className="mt-12 hidden overflow-hidden rounded-3xl border border-[var(--color-night-border)] lg:block">
-            <div className="grid grid-cols-3">
-              <div className="p-6" />
-              {[capacity, exclusive].map((col) => (
-                <div key={col.key} className="border-l border-[var(--color-night-border)] bg-[var(--color-night-elevated)] p-6">
-                  <ColumnHeader col={col} />
-                </div>
-              ))}
-            </div>
-
-            {BOOKING_TYPES.rows.map((row, i: number) => (
-              <div key={row.label} className={`grid grid-cols-3 ${i % 2 ? "bg-[var(--color-night-card)]/60" : ""}`}>
-                <div className="px-6 py-5">
-                  <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-gold)]">{row.label}</p>
-                </div>
-                <div className="border-l border-[var(--color-night-border)] px-6 py-5 text-sm leading-relaxed text-[var(--color-night-text)]">
-                  {row.capacity}
-                </div>
-                <div className="border-l border-[var(--color-night-border)] px-6 py-5 text-sm leading-relaxed text-[var(--color-night-text)]">
-                  {row.exclusive}
-                </div>
-              </div>
-            ))}
-
-            <div className="grid grid-cols-3">
-              <div className="p-6" />
-              {[capacity, exclusive].map((col) => (
-                <div key={col.key} className="border-l border-[var(--color-night-border)] p-6">
-                  <ColumnCta col={col} gate={gate} />
-                </div>
-              ))}
+        <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-16">
+          {/* Stage: sticky on desktop only */}
+          <div className="hidden lg:block">
+            <div
+              className="gradient-strip gradient-panel surface-grain p-8"
+              style={{
+                position: "sticky",
+                top: "calc(var(--header-h) + 2rem)",
+                height: "min(70svh, 40rem)",
+              }}
+            >
+              <SeatMap mode={active} />
             </div>
           </div>
-        </Reveal>
+
+          {/* Panels */}
+          <div>
+            {PANELS.map((panel, i) => (
+              <div
+                key={panel.mode}
+                ref={(el) => {
+                  panelRefs.current[i] = el;
+                }}
+                data-mode={panel.mode}
+                className="flex min-h-[70svh] flex-col justify-center border-t py-10 first:border-t-0 first:pt-0 lg:py-6"
+                style={{ borderColor: "var(--line)" }}
+              >
+                {/* Inline map for mobile (no sticky below lg) */}
+                <div
+                  className="gradient-strip gradient-panel surface-grain mb-8 p-6 lg:hidden"
+                  style={{ maxWidth: "22rem" }}
+                >
+                  <SeatMap mode={panel.mode} />
+                </div>
+                <p className="t-3 text-small" aria-hidden="true">
+                  {panel.step}
+                </p>
+                <h3 className="section-title t-1 mt-2 text-h3">{panel.title}</h3>
+                <p className="section-sub t-2 mt-3">{panel.body}</p>
+                <Link
+                  href={panel.link.href}
+                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, panel.link.href)}
+                  className="link mt-5 inline-block w-fit py-2"
+                >
+                  {panel.link.label}
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

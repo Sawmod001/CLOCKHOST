@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Fraunces, Manrope, Instrument_Serif, Space_Grotesk, Padyakke_Expanded_One, Atkinson_Hyperlegible_Next, Teko } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces, Manrope, Instrument_Serif, Space_Grotesk, Padyakke_Expanded_One, Teko, Archivo } from "next/font/google";
 import "./globals.css";
 import ChatBot from "@/components/ChatBot";
 import { BRAND } from "@/config/brand";
@@ -48,9 +48,10 @@ const display = Padyakke_Expanded_One({
   display: "swap",
 });
 
-const body = Atkinson_Hyperlegible_Next({
+const body = Archivo({
   variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -58,6 +59,15 @@ const figures = Teko({
   variable: "--font-figures",
   subsets: ["latin"],
   weight: ["500", "600"],
+  display: "swap",
+});
+
+// Micro-labels: Archivo grotesque 600. Chosen over Atkinson for proof/label
+// rows where a tighter, more editorial voice is needed (owner decision).
+const labels = Archivo({
+  variable: "--font-label",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -92,7 +102,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
         lang="en"
-        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${manrope.variable} ${instrumentSerif.variable} ${spaceGrotesk.variable} ${display.variable} ${body.variable} ${figures.variable} h-full antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${manrope.variable} ${instrumentSerif.variable} ${spaceGrotesk.variable} ${display.variable} ${body.variable} ${figures.variable} ${labels.variable} h-full antialiased`}
       >
         <body className="min-h-full flex flex-col">{children}<ChatBot /></body>
       </html>

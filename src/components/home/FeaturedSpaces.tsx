@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { MapPin, Building2, Home, ArrowRight } from "lucide-react";
-import { SectionContainer, SectionHeading } from "./Section";
-import Reveal from "./Reveal";
+import Image from "next/image";
+import { MapPin, Building2, Home, BadgeCheck } from "lucide-react";
+import { Price } from "./Price";
 
 export type GateHandler = (e: React.MouseEvent, href: string) => void;
 
@@ -36,138 +36,177 @@ interface FeaturedSpacesProps {
   subtitle?: string;
   emptyTitle?: string;
   emptySubtitle?: string;
+  /** "paper" (venues) or "haze" (shortlets). Defaults to paper. */
+  surface?: "paper" | "haze";
+  /** Section anchor id. Pass distinct ids when mounted twice. */
+  sectionId?: string;
+  /** Footer explore link. */
+  exploreLabel?: string;
+  exploreHref?: string;
 }
 
 const VERTICAL_ICONS: Record<string, typeof Building2> = { venue: Building2, housing: Home };
 
-function formatPrice(listing: FeaturedListing): string {
-  if (listing.vertical === "housing" || listing.listingType === "housing" || listing.vertical === "shortlet") {
+function priceParts(listing: FeaturedListing): { amount: number; unit?: string } | null {
+  const isHousing =
+    listing.vertical === "housing" ||
+    listing.listingType === "housing" ||
+    listing.vertical === "shortlet";
+  if (isHousing) {
     const monthly = listing.pricing?.monthlyRateKobo ?? listing.housingDetails?.monthlyRateKobo;
     const nightly = listing.pricing?.nightlyRateKobo ?? listing.housingDetails?.nightlyRateKobo;
     const kobo = monthly ?? nightly ?? 0;
-    if (!kobo) return "Price on request";
-    const period = monthly ? "/mo" : "/night";
-    return `₦${(kobo / 100).toLocaleString()}${period}`;
+    if (!kobo) return null;
+    return { amount: kobo / 100, unit: monthly ? "/mo" : "/night" };
   }
   const kobo = listing.pricing?.baseRatePerHour ?? listing.pricing?.baseRate ?? 0;
-  if (!kobo) return "Price on request";
-  return `₦${(kobo / 100).toLocaleString()} /hr`;
+  if (!kobo) return null;
+  return { amount: kobo / 100, unit: "/hr" };
 }
 
-export default function FeaturedSpaces({ listings, gate, loading, title, subtitle, emptyTitle, emptySubtitle }: FeaturedSpacesProps) {
+/**
+ * FeaturedSpaces — docs/02 (Featured) + docs/03 + docs/06 Prompt 6.
+ * Listing = image + text on the section surface. No background, border or
+ * shadow. Lead spans 2 columns (16:10), rest 4:5, container queries +
+ * subgrid. Mobile: scroll-snap row. Static Haze skeletons, no shimmer.
+ */
+export default function FeaturedSpaces({
+  listings,
+  gate,
+  loading,
+  title,
+  subtitle,
+  emptyTitle,
+  emptySubtitle,
+  surface = "paper",
+  sectionId = "featured",
+  exploreLabel = "Explore all",
+  exploreHref = "/listings",
+}: FeaturedSpacesProps) {
+  const surfaceClass = surface === "haze" ? "surface-haze surface-grain" : "surface-paper";
+
   return (
-    <SectionContainer id="featured" className="bg-[var(--color-night)] py-16 sm:py-24">
-      <SectionHeading
-        eyebrow="Featured spaces"
-        title={title || "Popular venues near you"}
-        subtitle={subtitle || "Handpicked spaces that are ready to book right now."}
-      />
-
-      {loading ? (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="overflow-hidden rounded-2xl border border-[var(--color-night-border)] bg-[var(--color-night-card)]">
-              <div className="h-48 animate-pulse bg-[var(--color-night-elevated)]" />
-              <div className="space-y-2 p-5">
-                <div className="h-4 w-3/4 animate-pulse rounded bg-[var(--color-night-elevated)]" />
-                <div className="h-3 w-1/2 animate-pulse rounded bg-[var(--color-night-elevated)]" />
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : listings.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-[var(--color-night-border)] bg-[var(--color-night-card)] p-10 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[var(--color-flame)]/15 text-[var(--color-flame-bright)]">
-            <Building2 size={28} aria-hidden="true" />
-          </div>
-          <h3 className="font-serif-display text-xl font-semibold text-[var(--color-night-text)]">
-            {emptyTitle || "New spaces are on the way"}
-          </h3>
-          <p className="mx-auto mt-2 max-w-md text-sm text-[var(--color-night-muted)]">
-            {emptySubtitle || "We are onboarding hosts. Stay close, the first venues go live very soon."}
+    <section aria-labelledby={`${sectionId}-title`} className={surfaceClass}>
+      <div className="page section">
+        <div className="section-head">
+          <h2 id={`${sectionId}-title`} className="section-title t-1 text-h2">
+            {title || "Places worth discovering"}
+          </h2>
+          <p className="section-sub t-2">
+            {subtitle || "Real venues, real photos, real availability."}
           </p>
-          <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link href="/notify" className="btn-outline-night btn-outline-night-sm inline-flex min-h-[44px] items-center justify-center">
-              Get notified
-            </Link>
-            <Link href="/sign-up" onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/sign-up")} className="btn-outline-night btn-outline-night-sm inline-flex min-h-[44px] items-center justify-center">
-              Become a Host
+        </div>
+
+        {loading ? (
+          <div className="listing-row mt-10" aria-hidden="true">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className={i === 0 ? "listing listing--lead" : "listing"}>
+                <div className="listing__media rounded-control bg-[var(--haze)]" />
+                <div className="h-5 w-3/4 rounded bg-[var(--haze)]" />
+                <div className="h-4 w-1/2 rounded bg-[var(--haze)]" />
+              </div>
+            ))}
+          </div>
+        ) : listings.length === 0 ? (
+          <div className="mt-10 max-w-xl">
+            <h3 className="font-display-face t-1 text-h3">
+              {emptyTitle || "No spaces yet"}
+            </h3>
+            <p className="t-2 mt-3 text-body">
+              {emptySubtitle || "We are onboarding hosts now."}
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:gap-8">
+              <Link href="/notify" className="link w-fit py-2">
+                Get notified
+              </Link>
+              <Link
+                href="/sign-up"
+                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/sign-up")}
+                className="link w-fit py-2"
+              >
+                Become a host
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <ul className="listing-row mt-10">
+            {listings.map((listing, i: number) => {
+              const Icon = VERTICAL_ICONS[listing.vertical ?? ""] || Building2;
+              const area = [listing.location?.cityArea, listing.location?.state]
+                .filter(Boolean)
+                .join(", ");
+              const price = priceParts(listing);
+              const href = `/listings/${listing.id}`;
+              return (
+                <li key={listing.id} className={i === 0 ? "listing listing--lead" : "listing"}>
+                  <article>
+                    <Link
+                      href={href}
+                      onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, href)}
+                      className="group block min-h-[44px]"
+                      aria-label={`${listing.title}${area ? `, ${area}` : ""}`}
+                    >
+                      <span className="listing__media relative block overflow-hidden rounded-control bg-[var(--haze)]">
+                        {listing.media?.[0] ? (
+                          <Image
+                            src={listing.media[0]}
+                            alt={`${listing.title}${area ? `, ${area}` : ""}`}
+                            fill
+                            loading="lazy"
+                            sizes="(min-width: 900px) 33vw, 80vw"
+                            className="object-cover"
+                          />
+                        ) : (
+                          <span className="flex h-full items-center justify-center">
+                            <Icon size={40} strokeWidth={1.5} className="t-3" aria-hidden="true" />
+                          </span>
+                        )}
+                      </span>
+                      <span className="mt-3 block">
+                        <span className={`t-1 block break-words font-semibold ${i === 0 ? "text-h3" : "text-lead"}`}>
+                          {listing.title}
+                        </span>
+                        <span className="t-2 mt-1 flex flex-wrap items-center gap-x-2 text-[15px]">
+                          {area && (
+                            <span className="inline-flex min-w-0 items-center gap-1">
+                              <MapPin size={14} strokeWidth={1.5} className="shrink-0" aria-hidden="true" />
+                              <span className="truncate">{area}</span>
+                            </span>
+                          )}
+                          {area && price && <span aria-hidden="true">,</span>}
+                          {price ? (
+                            <span>
+                              from <Price amount={price.amount} unit={price.unit} />
+                            </span>
+                          ) : (
+                            <span>Price on request</span>
+                          )}
+                        </span>
+                        <span className="t-3 mt-1.5 inline-flex items-center gap-1.5 text-small">
+                          <BadgeCheck size={14} strokeWidth={1.5} aria-hidden="true" />
+                          Reviewed
+                        </span>
+                      </span>
+                    </Link>
+                  </article>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        {!loading && listings.length > 0 && (
+          <div className="mt-10">
+            <Link
+              href={exploreHref}
+              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, exploreHref)}
+              className="link inline-block py-2 font-medium"
+            >
+              {exploreLabel}
             </Link>
           </div>
-        </div>
-      ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {listings.map((listing, i: number) => {
-            const Icon = VERTICAL_ICONS[listing.vertical ?? ""] || Building2;
-            const subVerticals: string[] = Array.isArray(listing.subVertical)
-              ? listing.subVertical
-              : listing.subVertical
-                ? [listing.subVertical]
-                : [];
-            return (
-              <Reveal key={listing.id} delay={(i % 3) * 80} className="h-full">
-                <a
-                  href={`/listings/${listing.id}`}
-                  onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, `/listings/${listing.id}`)}
-                  className="group block h-full overflow-hidden rounded-2xl border border-[var(--color-night-border)] bg-[var(--color-night-card)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--color-flame-bright)]/40 hover:shadow-xl"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-[var(--color-night-elevated)]">
-                    {listing.media?.[0] ? (
-                      <img
-                        src={listing.media[0]}
-                        alt={listing.title}
-                        width={640}
-                        height={480}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center">
-                        <Icon size={48} className="text-[var(--color-night-muted)]" aria-hidden="true" />
-                      </div>
-                    )}
-                    <span className="absolute bottom-3 left-3 z-10 rounded-lg border border-[var(--color-night-border)] bg-[var(--color-night)]/85 px-3 py-1.5 text-sm font-bold text-[var(--color-night-text)] backdrop-blur-sm">
-                      {formatPrice(listing)}
-                    </span>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="break-words font-semibold text-[var(--color-night-text)] transition-colors group-hover:text-[var(--color-flame-bright)]">
-                      {listing.title}
-                    </h3>
-                    <div className="mt-1 flex min-w-0 items-center gap-1 text-xs text-[var(--color-night-muted)]">
-                      <MapPin size={12} className="shrink-0" aria-hidden="true" /> <span className="truncate">{listing.location?.cityArea}, {listing.location?.state}</span>
-                    </div>
-                    {subVerticals.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-1.5">
-                        {subVerticals.map((sv) => (
-                          <span
-                            key={sv}
-                            className="rounded-full bg-[var(--color-flame)]/15 px-2.5 py-0.5 text-[11px] font-medium capitalize text-[var(--color-flame-bright)]"
-                          >
-                            {sv.replace(/_/g, " ")}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </a>
-              </Reveal>
-            );
-          })}
-        </div>
-      )}
-
-      {!loading && listings.length > 0 && (
-        <div className="mt-10 text-center">
-          <Link
-            href="/listings"
-            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => gate(e, "/listings")}
-            className="btn-outline-night btn-outline-night-sm inline-flex min-h-[44px] items-center gap-2"
-          >
-            View all spaces <ArrowRight size={16} />
-          </Link>
-        </div>
-      )}
-    </SectionContainer>
+        )}
+      </div>
+    </section>
   );
 }
